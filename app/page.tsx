@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { MenuIcon, SearchIcon } from "lucide-react"
+import { SearchIcon } from "lucide-react"
 
 // Utilities
 import { db } from "./_lib/prisma"
@@ -7,9 +7,10 @@ import { QUICK_SEARCH } from "./_constants/quick-search"
 
 // Components
 import { BarbershopItem } from "./_components/barbershop-item"
-import { Button } from "./_components/ui/button"
-import { Input } from "./_components/ui/input"
 import { BookingItem } from "./_components/booking-item"
+import { Button } from "./_components/ui/button"
+import { Header } from "./_components/header"
+import { Input } from "./_components/ui/input"
 
 const Home = async () => {
   const recommendedBarbershops = await db.barbershop.findMany({})
@@ -21,14 +22,7 @@ const Home = async () => {
 
   return (
     <div>
-      <header className="flex h-20 items-center justify-between border-b px-5">
-        <div className="relative h-[22px] w-[130px]">
-          <Image src="/logo.png" alt="Logo FSW Barber" fill />
-        </div>
-        <Button variant="outline" className="p-2.5">
-          <MenuIcon size={20} />
-        </Button>
-      </header>
+      <Header />
 
       <div className="gap-1 px-5 py-6">
         <h2 className="text-[28px]">Olá, Miguel!</h2>
