@@ -1,13 +1,15 @@
 import Image from "next/image"
+import { MenuIcon, SearchIcon } from "lucide-react"
+
+// Utilities
+import { db } from "./_lib/prisma"
+import { QUICK_SEARCH } from "./_constants/quick-search"
+
+// Components
+import { BarbershopItem } from "./_components/barbershop-item"
 import { Button } from "./_components/ui/button"
 import { Input } from "./_components/ui/input"
-import { MenuIcon, SearchIcon } from "lucide-react"
-import { QUICK_SEARCH } from "./_constants/quick-search"
-import { Card, CardContent } from "./_components/ui/card"
-import { Badge } from "./_components/ui/badge"
-import { Avatar, AvatarImage } from "./_components/ui/avatar"
-import { db } from "./_lib/prisma"
-import BarbershopItem from "./_components/barbershop-item"
+import { BookingItem } from "./_components/booking-item"
 
 const Home = async () => {
   const recommendedBarbershops = await db.barbershop.findMany({})
@@ -69,30 +71,7 @@ const Home = async () => {
         </div>
       </div>
 
-      <div className="space-y-3 px-5 pt-6">
-        <h2 className="title-separator">Agendamentos</h2>
-        <Card>
-          <CardContent className="flex p-0">
-            <div className="flex flex-1 flex-col gap-3 p-3">
-              <Badge variant="tertiary">Confirmado</Badge>
-              <div className="space-x-2">
-                <h3 className="font-bold">Corte de Cabelo</h3>
-                <div className="flex items-center gap-2">
-                  <Avatar className="size-6">
-                    <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-                  </Avatar>
-                  <p className="text-sm">Vintage Barber</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex w-[106px] flex-col items-center justify-center border-l">
-              <span className="text-xs">Fevereiro</span>
-              <span className="text-2xl">06</span>
-              <span className="text-xs">09:45</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <BookingItem />
 
       <div className="space-y-3 pl-5 pt-6">
         <h2 className="title-separator">Recomendados</h2>
@@ -102,6 +81,7 @@ const Home = async () => {
           ))}
         </div>
       </div>
+
       <div className="space-y-3 pl-5 pt-6">
         <h2 className="title-separator">Populares</h2>
         <div className="no-scrollbar flex gap-4 overflow-x-auto">
