@@ -45,6 +45,17 @@ const Home = () => {
           </Button>
         ))}
       </div>
+
+      <div className="px-5 pt-6">
+        <div className="relative h-[150px] w-full overflow-hidden rounded-lg">
+          <Image
+            src="/banner.png"
+            alt="Agende nos melhores com FSW Barber"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
     </div>
   )
 }
