@@ -56,6 +56,6 @@
   }
 
   .title-separator {
-    @apply text-sm font-bold uppercase text-gray-300;
+    @apply text-sm font-bold uppercase text-gray-400;
   }
 }

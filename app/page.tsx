@@ -6,8 +6,17 @@ import { QUICK_SEARCH } from "./_constants/quick-search"
 import { Card, CardContent } from "./_components/ui/card"
 import { Badge } from "./_components/ui/badge"
 import { Avatar, AvatarImage } from "./_components/ui/avatar"
+import { db } from "./_lib/prisma"
+import BarbershopItem from "./_components/barbershop-item"
 
-const Home = () => {
+const Home = async () => {
+  const recommendedBarbershops = await db.barbershop.findMany({})
+  const popularBarbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  })
+
   return (
     <div>
       <header className="flex h-20 items-center justify-between border-b px-5">
@@ -83,6 +92,23 @@ const Home = () => {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="space-y-3 pl-5 pt-6">
+        <h2 className="title-separator">Recomendados</h2>
+        <div className="no-scrollbar flex gap-4 overflow-x-auto">
+          {recommendedBarbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
+      </div>
+      <div className="space-y-3 pl-5 pt-6">
+        <h2 className="title-separator">Populares</h2>
+        <div className="no-scrollbar flex gap-4 overflow-x-auto">
+          {popularBarbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
       </div>
     </div>
   )
