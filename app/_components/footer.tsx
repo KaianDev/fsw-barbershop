@@ -1,0 +1,19 @@
+import { Card, CardContent } from "./ui/card"
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear()
+  return (
+    <footer className="pt-12">
+      <Card>
+        <CardContent className="p-0 px-5 py-6">
+          <p className="text-xs text-gray-400">
+            &copy; {currentYear} Copyright{" "}
+            <span className="font-bold">FSW Barber</span>
+          </p>
+        </CardContent>
+      </Card>
+    </footer>
+  )
+}
+
+export default Footer

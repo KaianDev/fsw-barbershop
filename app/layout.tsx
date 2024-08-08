@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Nunito_Sans as FontSans } from "next/font/google"
 import "./globals.css"
+import Footer from "./_components/footer"
 
 const fontSans = FontSans({ subsets: ["latin"] })
 
@@ -16,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={fontSans.className}>{children}</body>
+      <body className={fontSans.className}>
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
