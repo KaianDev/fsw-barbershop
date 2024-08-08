@@ -1,6 +1,6 @@
 import { Card, CardContent } from "./ui/card"
 
-const Footer = () => {
+export const Footer = () => {
   const currentYear = new Date().getFullYear()
   return (
     <footer className="pt-12">
@@ -15,5 +15,3 @@ const Footer = () => {
     </footer>
   )
 }
-
-export default Footer
