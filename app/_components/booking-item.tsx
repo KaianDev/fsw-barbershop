@@ -4,7 +4,7 @@ import { Card, CardContent } from "./ui/card"
 
 export const BookingItem = () => {
   return (
-    <div className="space-y-3 px-5 pt-6">
+    <div className="space-y-3 pt-6 md:pt-0">
       <h2 className="title-separator">Agendamentos</h2>
       <Card>
         <CardContent className="flex p-0">

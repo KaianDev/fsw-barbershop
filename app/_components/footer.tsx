@@ -4,7 +4,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear()
   return (
     <footer className="pt-12">
-      <Card>
+      <Card className="rounded-none border-none">
         <CardContent className="p-0 px-5 py-6">
           <p className="text-xs text-gray-400">
             &copy; {currentYear} Copyright{" "}
