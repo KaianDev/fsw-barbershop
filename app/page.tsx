@@ -103,10 +103,10 @@ const Home = async () => {
               ))}
             </div>
           </div>
-          <div className="space-y-3 pt-6 md:pt-10">
+          <div className="hidden space-y-3 pt-6 md:block md:pt-10">
             <h2 className="title-separator">Mais Visitados</h2>
             <div className="no-scrollbar flex gap-4 overflow-x-auto">
-              {popularBarbershops.map((barbershop) => (
+              {recommendedBarbershops.map((barbershop) => (
                 <BarbershopItem key={barbershop.id} barbershop={barbershop} />
               ))}
             </div>

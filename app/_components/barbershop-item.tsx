@@ -9,10 +9,10 @@ interface BarbershopItemProps {
 
 export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
-    <Card className="w-full min-w-[167px] overflow-hidden rounded-2xl">
+    <Card className="w-full min-w-[167px] overflow-hidden rounded-2xl md:min-w-[213px]">
       <CardContent className="p-0">
         <div className="p-1">
-          <div className="relative size-[159px]">
+          <div className="relative size-[159px] md:w-full">
             <Image
               src={barbershop.imageUrl}
               alt={barbershop.name}
@@ -21,7 +21,7 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
             />
           </div>
         </div>
-        <div className="space-y-3 px-3 pb-3">
+        <div className="space-y-3 px-3 pb-3 md:pt-3">
           <div className="space-y-1">
             <h3 className="truncate">{barbershop.name}</h3>
 
