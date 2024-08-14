@@ -9,7 +9,7 @@ interface BarbershopItemProps {
 
 export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
-    <Card className="w-full min-w-[167px] overflow-hidden rounded-2xl md:min-w-[213px]">
+    <Card className="w-[167px] shrink-0 overflow-hidden rounded-2xl md:w-[213px]">
       <CardContent className="p-0">
         <div className="p-1">
           <div className="relative size-[159px] md:w-full">

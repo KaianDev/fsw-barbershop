@@ -6,11 +6,12 @@ import { db } from "./_lib/prisma"
 import { QUICK_SEARCH } from "./_constants/quick-search"
 
 // Components
-import { BarbershopItem } from "./_components/barbershop-item"
 import { BookingItem } from "./_components/booking-item"
 import { Button } from "./_components/ui/button"
 import { Header } from "./_components/header"
 import { Input } from "./_components/ui/input"
+
+import { BarbershopCarousel } from "./_components/barbershop-carousel"
 
 const Home = async () => {
   const recommendedBarbershops = await db.barbershop.findMany({})
@@ -27,8 +28,8 @@ const Home = async () => {
       <main>
         <div className="relative bg-cover bg-top md:bg-[url('/hero.png')]">
           <div className="absolute inset-0 z-0 grayscale md:bg-black/90" />
-          <div className="relative mx-auto max-w-[1440px] px-5">
-            <div className="gap-16 md:flex md:py-16 lg:gap-32">
+          <div className="relative mx-auto max-w-[1440px] px-5 md:px-8">
+            <div className="gap-16 md:flex md:py-16 xl:gap-32">
               <div className="flex-col justify-between md:flex md:min-w-[354px]">
                 <div className="gap-1 py-6 md:py-0">
                   <h2 className="text-[28px]">Olá, Kaian!</h2>
@@ -77,39 +78,25 @@ const Home = async () => {
                 <BookingItem />
               </div>
 
-              <div className="md:flex-1 md:overflow-hidden">
+              <div className="flex-1 md:w-[275px] lg:w-[520px] xl:w-[600px]">
                 <div className="space-y-3 pt-6 md:pt-0">
                   <h2 className="title-separator">Recomendados</h2>
-                  <div className="no-scrollbar flex gap-4 overflow-x-auto">
-                    {recommendedBarbershops.map((barbershop) => (
-                      <BarbershopItem
-                        key={barbershop.id}
-                        barbershop={barbershop}
-                      />
-                    ))}
-                  </div>
+                  <BarbershopCarousel barbershops={popularBarbershops} />
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1440px] px-5">
+        <div className="mx-auto max-w-[1440px] px-5 md:px-8">
           <div className="space-y-3 pt-6 md:pt-10">
             <h2 className="title-separator">Populares</h2>
-            <div className="no-scrollbar flex gap-4 overflow-x-auto">
-              {popularBarbershops.map((barbershop) => (
-                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-              ))}
-            </div>
+            <BarbershopCarousel barbershops={popularBarbershops} />
           </div>
+
           <div className="hidden space-y-3 pt-6 md:block md:pt-10">
-            <h2 className="title-separator">Mais Visitados</h2>
-            <div className="no-scrollbar flex gap-4 overflow-x-auto">
-              {recommendedBarbershops.map((barbershop) => (
-                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-              ))}
-            </div>
+            <h2 className="title-separator">Mais visitados</h2>
+            <BarbershopCarousel barbershops={recommendedBarbershops} />
           </div>
         </div>
       </main>

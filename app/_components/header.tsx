@@ -7,7 +7,7 @@ import Link from "next/link"
 export const Header = () => {
   return (
     <header className="flex h-20 items-center justify-center border-b md:h-[96px]">
-      <div className="flex w-full max-w-[1440px] items-center justify-between px-5">
+      <div className="flex w-full max-w-[1440px] items-center justify-between px-5 md:px-8">
         <Link href={"/"}>
           <div className="relative h-[22px] w-[130px]">
             <Image src="/logo.png" alt="Logo FSW Barber" fill />
