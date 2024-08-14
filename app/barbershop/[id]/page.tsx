@@ -9,6 +9,7 @@ import { Button } from "@/app/_components/ui/button"
 // Utilities
 import { db } from "@/app/_lib/prisma"
 import { Separator } from "@/app/_components/separator"
+import { ServiceItem } from "@/app/_components/service-item"
 
 interface BarbershopPageProps {
   params: {
@@ -72,14 +73,21 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           </div>
         </div>
       </div>
+
       <Separator />
+
       <div className="space-y-3 px-5">
         <h2 className="title-separator">Sobre nós</h2>
         <p className="text-justify text-sm">{barbershop.description}</p>
       </div>
+
       <Separator />
+
       <div className="space-y-3 px-5">
         <h2 className="title-separator">Serviços</h2>
+        {barbershop.services.map((service) => (
+          <ServiceItem key={service.id} service={service} />
+        ))}
       </div>
     </div>
   )
