@@ -2,6 +2,7 @@ import { Barbershop } from "@prisma/client"
 import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import Image from "next/image"
+import Link from "next/link"
 
 interface BarbershopItemProps {
   barbershop: Barbershop
@@ -32,8 +33,9 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
           <Button
             className="w-full rounded-lg text-center font-bold"
             variant="secondary"
+            asChild
           >
-            Reservar
+            <Link href={`/barbershop/${barbershop.id}`}>Reservar</Link>
           </Button>
         </div>
       </CardContent>
