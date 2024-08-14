@@ -11,6 +11,7 @@ import { db } from "@/app/_lib/prisma"
 import { Separator } from "@/app/_components/separator"
 import { ServiceItem } from "@/app/_components/service-item"
 import { PhoneItem } from "@/app/_components/phone-item"
+import { SidebarSheet } from "@/app/_components/sidebar-sheet"
 
 interface BarbershopPageProps {
   params: {
@@ -52,13 +53,15 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
             <ChevronLeftIcon size={20} />
           </Link>
         </Button>
-        <Button
-          className="absolute right-5 top-6"
-          size="icon"
-          variant="secondary"
-        >
-          <MenuIcon size={20} />
-        </Button>
+        <SidebarSheet>
+          <Button
+            className="absolute right-5 top-6"
+            size="icon"
+            variant="secondary"
+          >
+            <MenuIcon size={20} />
+          </Button>
+        </SidebarSheet>
       </div>
 
       <div className="space-y-3 px-5 pt-3">

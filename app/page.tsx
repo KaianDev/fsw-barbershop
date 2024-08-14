@@ -81,7 +81,7 @@ const Home = async () => {
               <div className="flex-1 md:w-[275px] lg:w-[520px] xl:w-[600px]">
                 <div className="space-y-3 pt-6 md:pt-0">
                   <h2 className="title-separator">Recomendados</h2>
-                  <BarbershopCarousel barbershops={popularBarbershops} />
+                  <BarbershopCarousel barbershops={recommendedBarbershops} />
                 </div>
               </div>
             </div>

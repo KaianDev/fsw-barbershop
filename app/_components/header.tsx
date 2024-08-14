@@ -3,6 +3,7 @@ import { Button } from "./ui/button"
 import { CalendarDays, MenuIcon } from "lucide-react"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
+import { SidebarSheet } from "./sidebar-sheet"
 
 export const Header = () => {
   return (
@@ -25,9 +26,11 @@ export const Header = () => {
             <span className="font-bold">Kaian Vasconcelos</span>
           </div>
         </div>
-        <Button variant="outline" className="p-2.5 md:hidden">
-          <MenuIcon size={20} />
-        </Button>
+        <SidebarSheet>
+          <Button variant="outline" size="icon" className="md:hidden">
+            <MenuIcon size={20} />
+          </Button>
+        </SidebarSheet>
       </div>
     </header>
   )
