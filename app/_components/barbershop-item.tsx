@@ -10,7 +10,7 @@ interface BarbershopItemProps {
 
 export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
-    <Card className="min-w-[167px] shrink-0 overflow-hidden rounded-2xl md:w-[213px]">
+    <Card className="min-w-[167px] shrink-0 overflow-hidden rounded-2xl md:min-w-[213px]">
       <CardContent className="p-0">
         <div className="p-1">
           <div className="relative h-[159px] w-full">
@@ -18,7 +18,7 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
               src={barbershop.imageUrl}
               alt={barbershop.name}
               fill
-              className="rounded-2xl object-cover"
+              className="rounded-xl object-cover"
             />
           </div>
         </div>
