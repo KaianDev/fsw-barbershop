@@ -10,10 +10,10 @@ interface BarbershopItemProps {
 
 export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
-    <Card className="w-[167px] shrink-0 overflow-hidden rounded-2xl md:w-[213px]">
+    <Card className="min-w-[167px] shrink-0 overflow-hidden rounded-2xl md:w-[213px]">
       <CardContent className="p-0">
         <div className="p-1">
-          <div className="relative size-[159px] md:w-full">
+          <div className="relative h-[159px] w-full">
             <Image
               src={barbershop.imageUrl}
               alt={barbershop.name}

@@ -21,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="pt-Br" className="dark">
       <body className={fontSans.className}>
-        {children}
-        <Footer />
+        <div className="flex h-full flex-col">
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </div>
         <Toaster />
       </body>
     </html>
