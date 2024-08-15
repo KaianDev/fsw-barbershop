@@ -24,7 +24,7 @@ export const ServiceItem = ({ service }: ServiceItemProps) => {
         <div className="flex flex-1 flex-col justify-between text-sm">
           <div className="space-y-1">
             <h3 className="font-bold">{service.name}</h3>
-            <p className="text-gray-400">{service.description}</p>
+            <p className="line-clamp-2 text-gray-400">{service.description}</p>
           </div>
 
           <div className="flex items-center justify-between">
