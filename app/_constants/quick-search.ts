@@ -10,6 +10,10 @@ export const QUICK_SEARCH: QuickSearch[] = [
   },
   {
     imageUrl: "/mustache.svg",
+    title: "Barba",
+  },
+  {
+    imageUrl: "/razor-double.svg",
     title: "Acabamento",
   },
   {

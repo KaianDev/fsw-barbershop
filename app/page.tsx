@@ -1,4 +1,6 @@
+import Link from "next/link"
 import Image from "next/image"
+import { Suspense } from "react"
 
 // Utilities
 import { db } from "./_lib/prisma"
@@ -34,7 +36,9 @@ const Home = async () => {
                   <p className="text-sm">Sexta, 2 de Fevereiro</p>
                 </div>
 
-                <Search />
+                <Suspense>
+                  <Search />
+                </Suspense>
 
                 <div className="no-scrollbar flex w-full gap-2.5 overflow-x-auto pt-6 md:hidden">
                   {QUICK_SEARCH.map((item) => (
@@ -42,14 +46,17 @@ const Home = async () => {
                       key={item.title}
                       variant="outline"
                       className="flex w-fit shrink-0 items-center gap-2.5 bg-card"
+                      asChild
                     >
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.title}
-                        width={16}
-                        height={16}
-                      />
-                      <span className="text-sm">{item.title}</span>
+                      <Link href={`/barbershops?service=${item.title}`}>
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.title}
+                          width={16}
+                          height={16}
+                        />
+                        <span className="text-sm">{item.title}</span>
+                      </Link>
                     </Button>
                   ))}
                 </div>

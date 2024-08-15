@@ -77,14 +77,16 @@ export const SidebarSheet = ({ children }: SidebarSheetProps) => {
         <div className="flex flex-col gap-1">
           {QUICK_SEARCH.map((item) => (
             <SheetClose asChild key={item.title}>
-              <Button variant="ghost" className="justify-start gap-2">
-                <Image
-                  width={16}
-                  height={16}
-                  src={item.imageUrl}
-                  alt={item.title}
-                />
-                {item.title}
+              <Button variant="ghost" className="justify-start gap-2" asChild>
+                <Link href={`/barbershops?service=${item.title}`}>
+                  <Image
+                    width={16}
+                    height={16}
+                    src={item.imageUrl}
+                    alt={item.title}
+                  />
+                  {item.title}
+                </Link>
               </Button>
             </SheetClose>
           ))}

@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { CalendarDays, MenuIcon } from "lucide-react"
 import { usePathname } from "next/navigation"
+import { Suspense } from "react"
 
 // Components
 import { Button } from "./ui/button"
@@ -24,7 +25,9 @@ export const Header = () => {
         </Link>
         {pathname !== "/" && (
           <div className="hidden flex-1 md:block">
-            <Search />
+            <Suspense>
+              <Search />
+            </Suspense>
           </div>
         )}
         <div className="hidden items-center gap-6 md:flex">
