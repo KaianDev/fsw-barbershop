@@ -5,15 +5,15 @@ import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 
 // Components
 import { Button } from "@/app/_components/ui/button"
-
-// Utilities
-import { db } from "@/app/_lib/prisma"
 import { Separator } from "@/app/_components/separator"
 import { ServiceItem } from "@/app/_components/service-item"
 import { PhoneItem } from "@/app/_components/phone-item"
 import { SidebarSheet } from "@/app/_components/sidebar-sheet"
 import { Header } from "@/app/_components/header"
 import { BarbershopAside } from "@/app/_components/barbershop-aside"
+
+// Utilities
+import { db } from "@/app/_lib/prisma"
 
 interface BarbershopPageProps {
   params: {

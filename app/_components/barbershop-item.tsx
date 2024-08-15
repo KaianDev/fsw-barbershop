@@ -35,7 +35,7 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
             variant="secondary"
             asChild
           >
-            <Link href={`/barbershop/${barbershop.id}`}>Reservar</Link>
+            <Link href={`/barbershops/${barbershop.id}`}>Reservar</Link>
           </Button>
         </div>
       </CardContent>
