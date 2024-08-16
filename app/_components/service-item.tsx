@@ -18,7 +18,7 @@ export const ServiceItem = ({ service }: ServiceItemProps) => {
             src={service.imageUrl}
             alt={service.name}
             fill
-            objectFit="cover"
+            className="object-cover"
           />
         </div>
         <div className="flex flex-1 flex-col justify-between text-sm">
