@@ -6,6 +6,9 @@ import "./globals.css"
 import { Footer } from "./_components/footer"
 import { Toaster } from "./_components/ui/sonner"
 
+// Utilities
+import { AuthProvider } from "./_providers/auth"
+
 const fontSans = FontSans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
@@ -21,10 +24,12 @@ export default function RootLayout({
   return (
     <html lang="pt-Br" className="dark">
       <body className={fontSans.className}>
-        <div className="flex h-full flex-col">
-          <div className="flex-1">{children}</div>
-          <Footer />
-        </div>
+        <AuthProvider>
+          <div className="flex h-full flex-col">
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </div>
+        </AuthProvider>
         <Toaster />
       </body>
     </html>
