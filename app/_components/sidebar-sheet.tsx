@@ -1,8 +1,10 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { CalendarDaysIcon, HomeIcon, LogOutIcon } from "lucide-react"
+import { CalendarDaysIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 // Components
 import { Separator } from "./separator"
@@ -16,13 +18,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet"
+import { DialogLogin } from "./dialog-login"
+import { DialogLogout } from "./dialog-logout"
+
+// Utilities
 import { QUICK_SEARCH } from "../_constants/quick-search"
-import Image from "next/image"
 
 interface SidebarSheetProps extends React.PropsWithChildren {}
 
 export const SidebarSheet = ({ children }: SidebarSheetProps) => {
   const pathname = usePathname()
+  const { data: session } = useSession()
 
   return (
     <Sheet>
@@ -31,17 +37,28 @@ export const SidebarSheet = ({ children }: SidebarSheetProps) => {
         <SheetHeader>
           <SheetTitle className="text-start">Menu</SheetTitle>
         </SheetHeader>
-        <div className="mt-6 flex items-center gap-2">
-          <Avatar className="border border-primary">
-            <AvatarImage src={"https://github.com/kaiandev.png"} />
-          </Avatar>
-          <div className="flex flex-col">
-            <strong>Kaian Vasconcelos</strong>
-            <span className="text-sm text-gray-400">
-              kaianvasconcelos@gmail.com
-            </span>
+        {session?.user ? (
+          <div className="mt-6 flex items-center gap-2">
+            <Avatar className="border border-primary">
+              <AvatarImage src={session.user.image || ""} />
+            </Avatar>
+            <div className="flex flex-col">
+              <strong>{session?.user?.name}</strong>
+              <span className="text-sm text-gray-400">
+                {session?.user?.email}
+              </span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="mt-6 flex items-center justify-between">
+            <p>Olá. Faça seu login!</p>
+            <DialogLogin>
+              <Button size="icon">
+                <LogInIcon size={20} />
+              </Button>
+            </DialogLogin>
+          </div>
+        )}
 
         <Separator />
 
@@ -92,14 +109,18 @@ export const SidebarSheet = ({ children }: SidebarSheetProps) => {
           ))}
         </div>
 
-        <Separator />
+        {session?.user && (
+          <>
+            <Separator />
 
-        <SheetClose asChild>
-          <Button variant="ghost" className="w-full justify-start gap-2">
-            <LogOutIcon size={16} />
-            Sair
-          </Button>
-        </SheetClose>
+            <DialogLogout>
+              <Button variant="ghost" className="w-full justify-start gap-2">
+                <LogOutIcon size={16} />
+                Sair
+              </Button>
+            </DialogLogout>
+          </>
+        )}
       </SheetContent>
     </Sheet>
   )

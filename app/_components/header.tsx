@@ -2,18 +2,22 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { CalendarDays, MenuIcon } from "lucide-react"
+import { CalendarDays, MenuIcon, UserCircle2Icon } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { Suspense } from "react"
+import { useSession } from "next-auth/react"
 
 // Components
 import { Button } from "./ui/button"
-import { Avatar, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { SidebarSheet } from "./sidebar-sheet"
 import { Search } from "./search"
+import { DialogLogin } from "./dialog-login"
+import { DialogLogout } from "./dialog-logout"
 
 export const Header = () => {
   const pathname = usePathname()
+  const { data: session } = useSession()
 
   return (
     <header className="flex h-20 items-center justify-center border-b md:h-[96px]">
@@ -35,12 +39,28 @@ export const Header = () => {
             <CalendarDays size={20} />
             <span className="text-sm font-bold">Agendamentos</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Avatar className="size-9">
-              <AvatarImage src={"https://github.com/kaiandev.png"} />
-            </Avatar>
-            <span className="font-bold">Kaian Vasconcelos</span>
-          </div>
+          {session?.user ? (
+            <DialogLogout>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Avatar className="size-9">
+                  <AvatarFallback>
+                    {session.user?.name?.charAt(0)}
+                  </AvatarFallback>
+                  <AvatarImage src={session.user.image || ""} />
+                </Avatar>
+                <span className="font-bold md:hidden lg:block">
+                  {session.user.name}
+                </span>
+              </div>
+            </DialogLogout>
+          ) : (
+            <DialogLogin>
+              <Button className="gap-2 rounded-lg">
+                <UserCircle2Icon size={16} />
+                Perfil
+              </Button>
+            </DialogLogin>
+          )}
         </div>
 
         <SidebarSheet>
