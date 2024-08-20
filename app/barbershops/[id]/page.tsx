@@ -48,7 +48,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               src={barbershop.imageUrl}
               alt={barbershop.name}
               fill
-              objectFit="cover"
+              sizes="50vw"
+              className="object-cover"
             />
             <Button
               className="absolute left-5 top-6 md:hidden"
