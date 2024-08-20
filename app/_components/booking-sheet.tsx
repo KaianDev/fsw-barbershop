@@ -18,6 +18,8 @@ import { Calendar } from "./ui/calendar"
 import { useState } from "react"
 import { cn } from "../_lib/utils"
 import { Card, CardContent } from "./ui/card"
+import { useSession } from "next-auth/react"
+import { createBooking } from "../_actions/create-booking"
 
 interface BookingSheetProps {
   service: BarbershopService
@@ -40,15 +42,20 @@ const BOOKING_TIME = [
 ]
 
 export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
+  const { data: session } = useSession()
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
   )
 
-  const onBookingSubmit = () => {
+  const onBookingSubmit = async () => {
     if (!selectedDate || !selectedTime) {
       return
     }
+
+    if (!session?.user.id) return
+
     const [hour, minute] = selectedTime.split(":")
 
     const bookingDate = set(selectedDate, {
@@ -56,7 +63,11 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
       minutes: Number(minute),
     })
 
-    console.log(bookingDate)
+    await createBooking({
+      date: bookingDate,
+      serviceId: service.id,
+      userId: session.user.id,
+    })
   }
 
   return (
