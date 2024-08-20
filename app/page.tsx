@@ -67,6 +67,7 @@ const Home = async () => {
                       src="/banner.png"
                       alt="Agende nos melhores com FSW Barber"
                       fill
+                      sizes="100vw"
                       className="object-cover"
                     />
                   </div>

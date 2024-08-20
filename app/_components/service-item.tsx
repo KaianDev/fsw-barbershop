@@ -1,15 +1,16 @@
-import { BarbershopService } from "@prisma/client"
+import { Barbershop, BarbershopService } from "@prisma/client"
 import Image from "next/image"
 
 // Components
 import { Card, CardContent } from "./ui/card"
-import { Button } from "./ui/button"
+import { BookingSheet } from "./booking-sheet"
 
 interface ServiceItemProps {
   service: BarbershopService
+  barbershop: Pick<Barbershop, "name">
 }
 
-export const ServiceItem = ({ service }: ServiceItemProps) => {
+export const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   return (
     <Card>
       <CardContent className="flex gap-3 p-3">
@@ -18,6 +19,7 @@ export const ServiceItem = ({ service }: ServiceItemProps) => {
             src={service.imageUrl}
             alt={service.name}
             fill
+            sizes="33vw"
             className="object-cover"
           />
         </div>
@@ -34,9 +36,7 @@ export const ServiceItem = ({ service }: ServiceItemProps) => {
                 currency: "BRL",
               }).format(Number(service.price))}
             </span>
-            <Button variant="secondary" size="sm">
-              Reservar
-            </Button>
+            <BookingSheet service={service} barbershop={barbershop} />
           </div>
         </div>
       </CardContent>

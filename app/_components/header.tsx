@@ -24,7 +24,7 @@ export const Header = () => {
       <div className="flex w-full max-w-[1440px] items-center justify-between gap-8 px-5 md:px-8 lg:gap-11">
         <Link href={"/"}>
           <div className="relative h-[22px] w-[130px]">
-            <Image src="/logo.png" alt="Logo FSW Barber" fill />
+            <Image src="/logo.png" alt="Logo FSW Barber" fill sizes="33vw" />
           </div>
         </Link>
         {pathname !== "/" && (

@@ -17,6 +17,7 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
             <Image
               src={barbershop.imageUrl}
               alt={barbershop.name}
+              sizes="33vw"
               fill
               className="rounded-xl object-cover"
             />

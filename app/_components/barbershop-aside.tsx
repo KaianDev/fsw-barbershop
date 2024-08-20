@@ -47,8 +47,13 @@ export const BarbershopAside = ({ barbershop }: BarbershopAsideProps) => {
     <Card>
       <CardContent className="p-5">
         <div className="relative h-[180px] w-full overflow-hidden rounded-md">
-          <Image src="/card-map.png" alt="Mapa" fill className="object-cover" />
-
+          <Image
+            src="/card-map.png"
+            alt="Mapa"
+            fill
+            sizes="33vw"
+            className="object-cover"
+          />
           <div className="absolute inset-x-5 bottom-5 flex items-center gap-3 rounded-md bg-popover px-5 py-3">
             <Avatar className="size-12">
               <AvatarImage src={barbershop.imageUrl} />
@@ -87,7 +92,7 @@ export const BarbershopAside = ({ barbershop }: BarbershopAsideProps) => {
         <div className="flex items-center justify-between py-5">
           <span>Em parceria com</span>
           <div className="relative h-[22px] w-[130px]">
-            <Image src="/logo.png" alt="Logo" fill />
+            <Image src="/logo.png" alt="Logo" fill sizes="33vw" />
           </div>
         </div>
       </CardContent>
