@@ -54,7 +54,6 @@ export const BarbershopAside = ({ barbershop }: BarbershopAsideProps) => {
             sizes="33vw"
             className="object-cover"
           />
-
           <div className="absolute inset-x-5 bottom-5 flex items-center gap-3 rounded-md bg-popover px-5 py-3">
             <Avatar className="size-12">
               <AvatarImage src={barbershop.imageUrl} />
