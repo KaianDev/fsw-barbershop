@@ -12,8 +12,17 @@ import { Button } from "./_components/ui/button"
 import { Header } from "./_components/header"
 import { BarbershopCarousel } from "./_components/barbershop-carousel"
 import { Search } from "./_components/search"
+import { cn } from "./_lib/utils"
+import { auth } from "./_lib/auth"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 const Home = async () => {
+  const session = await auth()
+
+  // TODO: get user bookings
+  const hasBooking = true && !!session?.user
+
   const recommendedBarbershops = await db.barbershop.findMany({})
   const popularBarbershops = await db.barbershop.findMany({
     orderBy: {
@@ -30,17 +39,31 @@ const Home = async () => {
           <div className="absolute inset-0 z-0 grayscale md:bg-black/90" />
           <div className="relative mx-auto max-w-[1440px] px-5 md:px-8">
             <div className="gap-16 md:flex md:py-16 xl:gap-32">
-              <div className="flex-col justify-between md:flex md:min-w-[354px]">
+              <div
+                className={cn(
+                  "flex-col gap-4 md:flex md:min-w-[354px]",
+                  hasBooking && "justify-between gap-0",
+                )}
+              >
                 <div className="gap-1 py-6 md:py-0">
-                  <h2 className="text-[28px]">Olá, Kaian!</h2>
-                  <p className="text-sm">Sexta, 2 de Fevereiro</p>
+                  <h2 className="truncate text-[28px]">
+                    Olá,{" "}
+                    <span className="font-bold">
+                      {session?.user
+                        ? `${session.user.name}`
+                        : "Faça seu login"}
+                    </span>
+                  </h2>
+                  <p className="text-sm">
+                    {format(new Date(), "dd 'de' MMMM", { locale: ptBR })}
+                  </p>
                 </div>
 
                 <Suspense>
                   <Search />
                 </Suspense>
 
-                <div className="no-scrollbar flex w-full gap-2.5 overflow-x-auto pt-6 md:hidden">
+                <div className="no-scrollbar flex w-full gap-2.5 overflow-x-auto pt-6 md:pt-0">
                   {QUICK_SEARCH.map((item) => (
                     <Button
                       key={item.title}
@@ -73,7 +96,7 @@ const Home = async () => {
                   </div>
                 </div>
 
-                <BookingItem />
+                {hasBooking && <BookingItem />}
               </div>
 
               <div className="flex-1 md:w-[275px] lg:w-[520px] xl:w-[600px]">
