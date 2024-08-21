@@ -4,13 +4,21 @@ import Image from "next/image"
 // Components
 import { Card, CardContent } from "./ui/card"
 import { BookingSheet } from "./booking-sheet"
+import { Button } from "./ui/button"
+import { DialogLogin } from "./dialog-login"
+import { auth } from "../_lib/auth"
 
 interface ServiceItemProps {
   service: BarbershopService
   barbershop: Pick<Barbershop, "name">
 }
 
-export const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+export const ServiceItem = async ({
+  service,
+  barbershop,
+}: ServiceItemProps) => {
+  const session = await auth()
+
   return (
     <Card>
       <CardContent className="flex gap-3 p-3">
@@ -36,7 +44,15 @@ export const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                 currency: "BRL",
               }).format(Number(service.price))}
             </span>
-            <BookingSheet service={service} barbershop={barbershop} />
+            {session?.user ? (
+              <BookingSheet service={service} barbershop={barbershop} />
+            ) : (
+              <DialogLogin>
+                <Button variant="secondary" size="sm">
+                  Reservar
+                </Button>
+              </DialogLogin>
+            )}
           </div>
         </div>
       </CardContent>
