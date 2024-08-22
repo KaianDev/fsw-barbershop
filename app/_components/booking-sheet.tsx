@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useSession } from "next-auth/react"
 import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
 import { set, isAfter, startOfDay, format } from "date-fns"
-import { CheckIcon } from "lucide-react"
+import { CheckIcon, LoaderIcon } from "lucide-react"
 
 // Components
 import { Button, buttonVariants } from "./ui/button"
@@ -31,7 +31,7 @@ import {
 // Utilities
 import { cn } from "../_lib/utils"
 import { createBooking } from "../_actions/create-booking"
-import { getBookings } from "../_actions/get-bookings"
+import { useGetBookings } from "../_hooks/bookings/use-get-bookings"
 
 interface BookingSheetProps {
   service: BarbershopService
@@ -83,7 +83,6 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
   )
-  const [bookings, setBookings] = useState<Booking[]>([])
 
   const onBookingSubmit = async () => {
     if (!selectedDay || !selectedTime) {
@@ -112,20 +111,15 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
     }
   }
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      if (!selectedDay) return
-      const bookings = await getBookings({
-        serviceId: service.id,
-        date: selectedDay,
-      })
-      setBookings(bookings)
-    }
-    fetchBookings()
-  }, [selectedDay, service.id])
+  const { data: bookings, isLoading } = useGetBookings({
+    enabled: !!selectedDay,
+    serviceId: service.id,
+    date: selectedDay,
+  })
 
   const timeList = useMemo(() => {
     if (!selectedDay) return []
+    if (!bookings) return []
     return getTimeList({ bookings })
   }, [bookings, selectedDay])
 
@@ -133,7 +127,6 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
     setIsOpenSheet(isOpen)
     setSelectedDay(undefined)
     setSelectedTime(undefined)
-    setBookings([])
   }
 
   return (
@@ -144,7 +137,10 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
             Reservar
           </Button>
         </SheetTrigger>
-        <SheetContent className="px-0">
+        <SheetContent
+          className="px-0"
+          aria-describedby={"Menu lateral de fazer reserva"}
+        >
           <SheetHeader className="px-5 text-start">
             <SheetTitle>Fazer Reserva</SheetTitle>
           </SheetHeader>
@@ -182,20 +178,26 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
             <>
               <Separator />
               <div className="no-scrollbar flex gap-3 overflow-x-auto px-5">
-                {timeList.map((time) => (
-                  <Button
-                    key={time}
-                    variant={selectedTime === time ? "default" : "outline"}
-                    size="sm"
-                    className={cn(
-                      selectedTime === time && "border border-primary",
-                      "rounded-full",
-                    )}
-                    onClick={() => setSelectedTime(time)}
-                  >
-                    {time}
-                  </Button>
-                ))}
+                {!isLoading ? (
+                  timeList.map((time) => (
+                    <Button
+                      key={time}
+                      variant={selectedTime === time ? "default" : "outline"}
+                      size="sm"
+                      className={cn(
+                        selectedTime === time && "border border-primary",
+                        "rounded-full",
+                      )}
+                      onClick={() => setSelectedTime(time)}
+                    >
+                      {time}
+                    </Button>
+                  ))
+                ) : (
+                  <div className="flex h-9 w-full items-center justify-center">
+                    <LoaderIcon size={20} className="animate-spin" />
+                  </div>
+                )}
               </div>
               <Separator />
             </>
