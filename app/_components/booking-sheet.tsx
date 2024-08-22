@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSession } from "next-auth/react"
-import { Barbershop, BarbershopService } from "@prisma/client"
+import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
 import { set, isAfter, startOfDay, format } from "date-fns"
 import { CheckIcon } from "lucide-react"
@@ -31,6 +31,7 @@ import {
 // Utilities
 import { cn } from "../_lib/utils"
 import { createBooking } from "../_actions/create-booking"
+import { getBookings } from "../_actions/get-bookings"
 
 interface BookingSheetProps {
   service: BarbershopService
@@ -52,18 +53,40 @@ const BOOKING_TIME = [
   "18:15",
 ]
 
+interface TimeListProps {
+  bookings: Booking[]
+}
+
+const getTimeList = ({ bookings }: TimeListProps) => {
+  const timeList = BOOKING_TIME.filter((time) => {
+    const [hours, minutes] = time.split(":")
+    const hasBookingOnCurrentTime = bookings.some(
+      (booking) =>
+        booking.date.getHours() === Number(hours) &&
+        booking.date.getMinutes() === Number(minutes),
+    )
+
+    if (hasBookingOnCurrentTime) {
+      return false
+    }
+    return true
+  })
+  return timeList
+}
+
 export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
   const { data: session } = useSession()
   const [isOpenSheet, setIsOpenSheet] = useState(false)
   const [isOpenAlertDialog, setIsOpenAlertDialog] = useState(false)
 
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
   )
+  const [bookings, setBookings] = useState<Booking[]>([])
 
   const onBookingSubmit = async () => {
-    if (!selectedDate || !selectedTime) {
+    if (!selectedDay || !selectedTime) {
       return
     }
 
@@ -71,7 +94,7 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
 
     const [hour, minute] = selectedTime.split(":")
 
-    const bookingDate = set(selectedDate, {
+    const bookingDate = set(selectedDay, {
       hours: Number(hour),
       minutes: Number(minute),
     })
@@ -89,9 +112,33 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
     }
   }
 
+  useEffect(() => {
+    const fetchBookings = async () => {
+      if (!selectedDay) return
+      const bookings = await getBookings({
+        serviceId: service.id,
+        date: selectedDay,
+      })
+      setBookings(bookings)
+    }
+    fetchBookings()
+  }, [selectedDay, service.id])
+
+  const timeList = useMemo(() => {
+    if (!selectedDay) return []
+    return getTimeList({ bookings })
+  }, [bookings, selectedDay])
+
+  const handleBookingSheetOpen = (isOpen: boolean) => {
+    setIsOpenSheet(isOpen)
+    setSelectedDay(undefined)
+    setSelectedTime(undefined)
+    setBookings([])
+  }
+
   return (
     <>
-      <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
+      <Sheet open={isOpenSheet} onOpenChange={handleBookingSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="secondary" size="sm">
             Reservar
@@ -107,8 +154,8 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
               mode="single"
               locale={ptBR}
               className="capitalize"
-              selected={selectedDate}
-              onSelect={(date) => setSelectedDate(date)}
+              selected={selectedDay}
+              onSelect={(date) => setSelectedDay(date)}
               fromMonth={new Date()}
               disabled={(date) =>
                 isAfter(startOfDay(new Date()), startOfDay(date))
@@ -131,11 +178,11 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
             />
           </div>
 
-          {selectedDate && (
+          {selectedDay && (
             <>
               <Separator />
               <div className="no-scrollbar flex gap-3 overflow-x-auto px-5">
-                {BOOKING_TIME.map((time) => (
+                {timeList.map((time) => (
                   <Button
                     key={time}
                     variant={selectedTime === time ? "default" : "outline"}
@@ -154,7 +201,7 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
             </>
           )}
 
-          {selectedTime && selectedDate && (
+          {selectedTime && selectedDay && (
             <div className="px-5">
               <Card>
                 <CardContent className="p-3">
@@ -171,7 +218,7 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
                     <li className="flex items-center justify-between text-sm">
                       <span className="text-gray-400">Data</span>
                       <span>
-                        {format(selectedDate, "dd 'de' MMMM", { locale: ptBR })}
+                        {format(selectedDay, "dd 'de' MMMM", { locale: ptBR })}
                       </span>
                     </li>
                     <li className="flex items-center justify-between text-sm">
@@ -191,7 +238,7 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
           <div className="mt-6 px-5">
             <Button
               onClick={onBookingSubmit}
-              disabled={!selectedDate || !selectedTime}
+              disabled={!selectedDay || !selectedTime}
               className="w-full"
             >
               Confirmar
@@ -201,7 +248,10 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
       </Sheet>
 
       <AlertDialog onOpenChange={setIsOpenAlertDialog} open={isOpenAlertDialog}>
-        <AlertDialogContent className="max-w-[246px]">
+        <AlertDialogContent
+          className="max-w-[246px]"
+          aria-describedby={"Feedback de reserva criada"}
+        >
           <div className="mx-auto flex size-[72px] items-center justify-center rounded-full bg-primary">
             <CheckIcon strokeWidth={5} size={30} className="text-black" />
           </div>
