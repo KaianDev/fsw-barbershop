@@ -30,8 +30,9 @@ import {
 
 // Utilities
 import { cn } from "../_lib/utils"
-import { createBooking } from "../_actions/create-booking"
 import { useGetBookings } from "../_hooks/bookings/use-get-bookings"
+import { useCreateBooking } from "../_hooks/bookings/use-create-booking"
+import { queryClient } from "../_lib/tanstack"
 
 interface BookingSheetProps {
   service: BarbershopService
@@ -50,7 +51,6 @@ const BOOKING_TIME = [
   "16:00",
   "16:45",
   "17:30",
-  "18:15",
 ]
 
 interface TimeListProps {
@@ -84,6 +84,14 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
     undefined,
   )
 
+  const { data: bookings, isLoading } = useGetBookings({
+    enabled: !!selectedDay,
+    serviceId: service.id,
+    date: selectedDay,
+  })
+
+  const { mutateAsync: createBooking } = useCreateBooking()
+
   const onBookingSubmit = async () => {
     if (!selectedDay || !selectedTime) {
       return
@@ -98,24 +106,29 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
       minutes: Number(minute),
     })
 
-    try {
-      await createBooking({
+    await createBooking(
+      {
         date: bookingDate,
         serviceId: service.id,
         userId: session.user.id,
-      })
-      setIsOpenAlertDialog(true)
-      setIsOpenSheet(false)
-    } catch (error) {
-      console.error("Error creating booking", error)
-    }
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "bookings",
+              { serviceId: service.id, date: selectedDay },
+            ],
+          })
+          setIsOpenSheet(false)
+          setIsOpenAlertDialog(true)
+        },
+        onError: (error) => {
+          console.error("Error creating booking", error)
+        },
+      },
+    )
   }
-
-  const { data: bookings, isLoading } = useGetBookings({
-    enabled: !!selectedDay,
-    serviceId: service.id,
-    date: selectedDay,
-  })
 
   const timeList = useMemo(() => {
     if (!selectedDay) return []
