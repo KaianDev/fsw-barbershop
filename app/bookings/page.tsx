@@ -1,11 +1,11 @@
 // Components
 import { Header } from "../_components/header"
-import { BookingItem } from "../_components/booking-item"
+import { BookingDetailsAside } from "../_components/booking-details-aside"
+import { BookingDetailsSheet } from "../_components/booking-details-sheet"
 
 // Utilities
 import { getConcludedBookings } from "../_actions/get-concluded-bookings"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
-import { BookingDetailsAside } from "../_components/booking-details-aside"
 
 const BookingPage = async () => {
   // TODO: Abrir dialog de login quando clicar em ver agendamentos
@@ -27,7 +27,7 @@ const BookingPage = async () => {
             <div className="space-y-3">
               <h2 className="title-separator md:text-gray-500">Confirmados</h2>
               {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
+                <BookingDetailsSheet key={booking.id} booking={booking} />
               ))}
             </div>
           )}
@@ -36,7 +36,7 @@ const BookingPage = async () => {
             <div className="space-y-3">
               <h2 className="title-separator md:text-gray-500">Finalizados</h2>
               {concludedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
+                <BookingDetailsSheet key={booking.id} booking={booking} />
               ))}
             </div>
           )}

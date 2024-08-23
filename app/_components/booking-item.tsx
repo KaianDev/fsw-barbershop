@@ -1,9 +1,11 @@
 import { Prisma } from "@prisma/client"
-import { Avatar, AvatarImage } from "./ui/avatar"
-import { Badge } from "./ui/badge"
-import { Card, CardContent } from "./ui/card"
 import { format, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
+
+// Components
+import { Avatar, AvatarImage } from "./ui/avatar"
+import { Card, CardContent } from "./ui/card"
+import { BookingStatusBadge } from "./booking-status-badge"
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -24,14 +26,12 @@ export const BookingItem = ({ booking }: BookingItemProps) => {
     <Card className="min-w-[90%]">
       <CardContent className="flex p-0">
         <div className="flex flex-1 flex-col gap-3 p-3">
-          <Badge variant={isConfirmedBooking ? "tertiary" : "secondary"}>
-            {isConfirmedBooking ? "Confirmado" : "Finalizado"}
-          </Badge>
+          <BookingStatusBadge isConfirmedBooking={isConfirmedBooking} />
           <div className="space-y-2">
-            <h3 className="font-bold">{booking.service.name}</h3>
+            <h3 className="text-start font-bold">{booking.service.name}</h3>
             <div className="flex items-center gap-2">
               <Avatar className="size-6">
-                <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
+                <AvatarImage src={booking.service.barbershop.imageUrl} />
               </Avatar>
               <p className="text-sm">{booking.service.barbershop.name}</p>
             </div>
