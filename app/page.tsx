@@ -1,10 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import { Suspense } from "react"
-
-// Utilities
-import { db } from "./_lib/prisma"
-import { QUICK_SEARCH } from "./_constants/quick-search"
 
 // Components
 import { BookingItem } from "./_components/booking-item"
@@ -14,14 +12,17 @@ import { BarbershopCarousel } from "./_components/barbershop-carousel"
 import { Search } from "./_components/search"
 import { cn } from "./_lib/utils"
 import { auth } from "./_lib/auth"
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
+
+// Utilities
+import { db } from "./_lib/prisma"
+import { QUICK_SEARCH } from "./_constants/quick-search"
+import { getConfirmedBookings } from "./_actions/get-confirmed-bookings"
 
 const Home = async () => {
   const session = await auth()
+  const confirmedBookings = await getConfirmedBookings()
 
-  // TODO: get user bookings
-  const hasBooking = true && !!session?.user
+  const hasBooking = confirmedBookings.length > 0 && !!session?.user
 
   const recommendedBarbershops = await db.barbershop.findMany({})
   const popularBarbershops = await db.barbershop.findMany({
@@ -96,7 +97,16 @@ const Home = async () => {
                   </div>
                 </div>
 
-                {hasBooking && <BookingItem />}
+                {hasBooking && (
+                  <div className="space-y-3 pt-6 md:pt-0">
+                    <h2 className="title-separator">Agendamentos</h2>
+                    <div className="no-scrollbar flex items-center gap-3 overflow-x-auto">
+                      {confirmedBookings.map((booking) => (
+                        <BookingItem key={booking.id} booking={booking} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex-1 md:w-[275px] lg:w-[520px] xl:w-[600px]">
