@@ -2,23 +2,25 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "../_lib/prisma"
+import { auth } from "../_lib/auth"
 
 interface CreateBookingData {
   date: Date
   serviceId: string
-  userId: string
 }
 
-export const createBooking = async ({
-  date,
-  serviceId,
-  userId,
-}: CreateBookingData) => {
+export const createBooking = async ({ date, serviceId }: CreateBookingData) => {
+  const session = await auth()
+
+  if (!session?.user || !session.user.id) {
+    throw new Error("Usuário não autenticado")
+  }
+
   await db.booking.create({
     data: {
       date,
       serviceId,
-      userId,
+      userId: session.user.id,
     },
   })
 

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { useSession } from "next-auth/react"
 import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
 import { set, isAfter, startOfDay, format } from "date-fns"
@@ -75,7 +74,6 @@ const getTimeList = ({ bookings }: TimeListProps) => {
 }
 
 export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
-  const { data: session } = useSession()
   const [isOpenSheet, setIsOpenSheet] = useState(false)
   const [isOpenAlertDialog, setIsOpenAlertDialog] = useState(false)
 
@@ -90,8 +88,6 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
       return
     }
 
-    if (!session?.user.id) return
-
     const [hour, minute] = selectedTime.split(":")
 
     const bookingDate = set(selectedDay, {
@@ -103,7 +99,6 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
       await createBooking({
         date: bookingDate,
         serviceId: service.id,
-        userId: session.user.id,
       })
       setIsOpenAlertDialog(true)
       setIsOpenSheet(false)
