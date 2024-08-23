@@ -12,6 +12,8 @@ const BookingPage = async () => {
   const concludedBookings = await getConcludedBookings()
   const confirmedBookings = await getConfirmedBookings()
 
+  console.log(concludedBookings.length, confirmedBookings.length)
+
   return (
     <div>
       <Header />
@@ -21,24 +23,30 @@ const BookingPage = async () => {
 
       <div className="mx-auto flex max-w-[1200px] gap-10 px-5 md:px-8">
         <div className="flex-1 space-y-6">
-          <div className="space-y-3">
-            <h2 className="title-separator md:text-gray-500">Confirmados</h2>
-            {confirmedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
-          </div>
+          {confirmedBookings.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="title-separator md:text-gray-500">Confirmados</h2>
+              {confirmedBookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
+          )}
 
-          <div className="space-y-3">
-            <h2 className="title-separator md:text-gray-500">Finalizados</h2>
-            {concludedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
-          </div>
+          {concludedBookings.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="title-separator md:text-gray-500">Finalizados</h2>
+              {concludedBookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="mt-10 hidden flex-1 md:block">
-          <BookingDetailsAside booking={confirmedBookings[0]} />
-        </div>
+        {(confirmedBookings.length > 0 || concludedBookings.length > 0) && (
+          <div className="mt-10 hidden flex-1 md:block">
+            <BookingDetailsAside booking={confirmedBookings[0]} />
+          </div>
+        )}
       </div>
     </div>
   )

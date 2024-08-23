@@ -12,7 +12,7 @@ interface CreateBookingData {
 export const createBooking = async ({ date, serviceId }: CreateBookingData) => {
   const session = await auth()
 
-  if (!session?.user || !session.user.id) {
+  if (!session?.user) {
     throw new Error("Usuário não autenticado")
   }
 

@@ -6,7 +6,7 @@ import { db } from "../_lib/prisma"
 export const getConcludedBookings = async () => {
   const session = await auth()
 
-  if (!session?.user || !session.user.id) return []
+  if (!session?.user) return []
 
   const bookings = await db.booking.findMany({
     where: {
