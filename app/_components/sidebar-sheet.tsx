@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react"
 
 // Components
 import { Separator } from "./separator"
-import { Avatar, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import {
   Sheet,
@@ -40,6 +40,7 @@ export const SidebarSheet = ({ children }: SidebarSheetProps) => {
         {session?.user ? (
           <div className="mt-6 flex items-center gap-2">
             <Avatar className="border border-primary">
+              <AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
               <AvatarImage src={session.user.image || ""} />
             </Avatar>
             <div className="flex flex-col">
@@ -77,11 +78,11 @@ export const SidebarSheet = ({ children }: SidebarSheetProps) => {
           </SheetClose>
           <SheetClose asChild>
             <Button
-              variant={pathname.includes("/booking") ? "default" : "ghost"}
+              variant={pathname.includes("/bookings") ? "default" : "ghost"}
               className="w-full justify-start gap-2"
               asChild
             >
-              <Link href="/">
+              <Link href="/bookings">
                 <CalendarDaysIcon size={16} />
                 Agendamentos
               </Link>

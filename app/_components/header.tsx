@@ -35,7 +35,7 @@ export const Header = () => {
           </div>
         )}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href={"#"} className="flex gap-2">
+          <Link href="/bookings" className="flex gap-2">
             <CalendarDays size={20} />
             <span className="text-sm font-bold">Agendamentos</span>
           </Link>

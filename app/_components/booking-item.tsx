@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Badge } from "./ui/badge"
 import { Card, CardContent } from "./ui/card"
-import { format } from "date-fns"
+import { format, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
 interface BookingItemProps {
@@ -18,11 +18,15 @@ interface BookingItemProps {
 }
 
 export const BookingItem = ({ booking }: BookingItemProps) => {
+  const isConfirmedBooking = isFuture(booking.date)
+
   return (
     <Card className="min-w-[90%]">
       <CardContent className="flex p-0">
         <div className="flex flex-1 flex-col gap-3 p-3">
-          <Badge variant="tertiary">Confirmado</Badge>
+          <Badge variant={isConfirmedBooking ? "tertiary" : "secondary"}>
+            {isConfirmedBooking ? "Confirmado" : "Finalizado"}
+          </Badge>
           <div className="space-y-2">
             <h3 className="font-bold">{booking.service.name}</h3>
             <div className="flex items-center gap-2">
