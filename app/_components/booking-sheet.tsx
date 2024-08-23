@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
-import { set, isAfter, startOfDay, format } from "date-fns"
+import { set, isAfter, startOfDay } from "date-fns"
 import { CheckIcon } from "lucide-react"
 
 // Components
@@ -17,7 +17,6 @@ import {
 } from "./ui/sheet"
 import { Separator } from "./separator"
 import { Calendar } from "./ui/calendar"
-import { Card, CardContent } from "./ui/card"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -26,6 +25,7 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "./ui/alert-dialog"
+import { ServiceDetails } from "./service-details"
 
 // Utilities
 import { cn } from "../_lib/utils"
@@ -198,35 +198,12 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
 
           {selectedTime && selectedDay && (
             <div className="px-5">
-              <Card>
-                <CardContent className="p-3">
-                  <ul className="flex flex-col gap-3">
-                    <li className="flex items-center justify-between">
-                      <span className="font-bold">{service.name}</span>
-                      <span className="text-sm font-bold">
-                        {Intl.NumberFormat("pt-br", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(Number(service.price))}
-                      </span>
-                    </li>
-                    <li className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Data</span>
-                      <span>
-                        {format(selectedDay, "dd 'de' MMMM", { locale: ptBR })}
-                      </span>
-                    </li>
-                    <li className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Horário</span>
-                      <span>{selectedTime}</span>
-                    </li>
-                    <li className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Barbearia</span>
-                      <span>{barbershop.name}</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+              <ServiceDetails
+                barbershop={barbershop}
+                service={service}
+                date={selectedDay}
+                time={selectedTime}
+              />
             </div>
           )}
 
