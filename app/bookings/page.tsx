@@ -1,3 +1,5 @@
+import { validate } from "uuid"
+
 // Components
 import { Header } from "../_components/header"
 import { BookingDetailsAside } from "../_components/booking-details-aside"
@@ -20,7 +22,7 @@ const BookingPage = async ({ searchParams }: BookingPageProps) => {
   const confirmedBookings = await getConfirmedBookings()
 
   const getCurrentBooking = () => {
-    if (!searchParams.bookingId) {
+    if (!searchParams.bookingId || !validate(searchParams.bookingId)) {
       if (confirmedBookings.length > 0) {
         return confirmedBookings[0]
       }
