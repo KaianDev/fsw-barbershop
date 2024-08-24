@@ -22,8 +22,8 @@ export const getBarbershopReview = async ({
   })
 
   const review = {
-    count: reviews._count.rating || 0,
-    avg: reviews._avg.rating || 0,
+    count: reviews._count?.rating || 0,
+    avg: reviews._avg?.rating || 0,
   }
 
   return review
