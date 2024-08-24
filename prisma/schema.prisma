@@ -88,14 +88,16 @@ model BarbershopService {
 
 model BarbershopReview {
   id           String   @id @default(uuid())
-  barbershopId String   @unique
-  userId       String   @unique
+  barbershopId String
+  userId       String
   rating       Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   user       User       @relation(fields: [userId], references: [id])
   barbershop Barbershop @relation(fields: [barbershopId], references: [id])
+
+  @@unique([userId, barbershopId])
 }
 
 model Booking {
