@@ -77,7 +77,7 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
 
   const isConfirmedBooking = isFuture(booking.date)
 
-  const { data: review } = useBarbershopUserReview({
+  const { data: review, isLoading } = useBarbershopUserReview({
     barbershopId: booking.service.barbershop.id,
     enabled: isBookingDetailsOpen,
   })
@@ -133,6 +133,7 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
                   barbershop={booking.service.barbershop}
                   sheetClose={setIsBookingDetailsOpen}
                   ratingAverage={review}
+                  isLoading={isLoading}
                 />
               )}
             </div>

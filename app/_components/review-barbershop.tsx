@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Barbershop } from "@prisma/client"
-import { StarIcon } from "lucide-react"
+import { LoaderIcon, StarIcon } from "lucide-react"
 
 // Components
 import {
@@ -29,16 +29,26 @@ import { useUpdateBarbershopUserReview } from "../_hooks/review/use-upate-barber
 interface ReviewBarbershopProps {
   barbershop: Pick<Barbershop, "name" | "id">
   ratingAverage?: number
+  isLoading?: boolean
   sheetClose?: (v: boolean) => void
 }
 
 export const ReviewBarbershop = ({
   barbershop,
   ratingAverage,
+  isLoading,
   sheetClose,
 }: ReviewBarbershopProps) => {
   const [rating, setRating] = useState(ratingAverage || 0)
   const [hover, setHover] = useState<number | null>(null)
+
+  useEffect(() => {
+    setRating(ratingAverage || 0)
+
+    return () => {
+      setRating(0)
+    }
+  }, [ratingAverage])
 
   const { mutateAsync: addReviewMutate } = useAddBarbershopUserReview()
   const { mutateAsync: updateReviewMutate } = useUpdateBarbershopUserReview()
@@ -122,36 +132,42 @@ export const ReviewBarbershop = ({
         </AlertDialogHeader>
 
         <div className="flex items-center justify-center">
-          {Array.from({ length: 5 }).map((_, index) => {
-            const currentRating = index + 1
+          {!isLoading ? (
+            Array.from({ length: 5 }).map((_, index) => {
+              const currentRating = index + 1
 
-            return (
-              <label
-                htmlFor={index.toString()}
-                key={index}
-                onMouseEnter={() => setHover(currentRating)}
-                onMouseLeave={() => setHover(null)}
-              >
-                <input
-                  id={index.toString()}
-                  type="radio"
-                  name="rating"
-                  value={currentRating}
-                  onChange={() => setRating(currentRating)}
-                  className="hidden"
-                />
-                <StarIcon
-                  size={24}
-                  className={cn(
-                    "cursor-pointer text-secondary transition-colors",
-                    currentRating <= (hover || rating)
-                      ? "fill-primary stroke-primary"
-                      : "stroke-secondary",
-                  )}
-                />
-              </label>
-            )
-          })}
+              return (
+                <label
+                  htmlFor={index.toString()}
+                  key={index}
+                  onMouseEnter={() => setHover(currentRating)}
+                  onMouseLeave={() => setHover(null)}
+                >
+                  <input
+                    id={index.toString()}
+                    type="radio"
+                    name="rating"
+                    value={currentRating}
+                    onChange={() => setRating(currentRating)}
+                    className="hidden"
+                  />
+                  <StarIcon
+                    size={24}
+                    className={cn(
+                      "cursor-pointer text-secondary transition-colors",
+                      currentRating <= (hover || rating)
+                        ? "fill-primary stroke-primary"
+                        : "stroke-secondary",
+                    )}
+                  />
+                </label>
+              )
+            })
+          ) : (
+            <div className="flex items-center justify-center">
+              <LoaderIcon className="animate-spin" />
+            </div>
+          )}
         </div>
 
         <AlertDialogFooter className="grid w-full grid-cols-2 gap-3">

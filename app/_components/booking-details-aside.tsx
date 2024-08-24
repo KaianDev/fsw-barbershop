@@ -1,3 +1,5 @@
+"use client"
+
 import { Prisma } from "@prisma/client"
 import { format, isFuture } from "date-fns"
 
@@ -10,7 +12,7 @@ import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
 import { ReviewBarbershop } from "./review-barbershop"
 
 // Utilities
-import { getBarbershopUserReview } from "../_actions/get-barbershop-user-review"
+import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"
 
 interface BookingDetailsAsideProps {
   booking: Prisma.BookingGetPayload<{
@@ -24,14 +26,13 @@ interface BookingDetailsAsideProps {
   }>
 }
 
-export const BookingDetailsAside = async ({
-  booking,
-}: BookingDetailsAsideProps) => {
+export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
   const time = format(booking.date, "HH:mm")
   const isConfirmedBooking = isFuture(booking.date)
 
-  const rating = await getBarbershopUserReview({
+  const { data: rating, isLoading } = useBarbershopUserReview({
     barbershopId: booking.service.barbershop.id,
+    enabled: true,
   })
 
   return (
@@ -58,6 +59,7 @@ export const BookingDetailsAside = async ({
             <ReviewBarbershop
               barbershop={booking.service.barbershop}
               ratingAverage={rating}
+              isLoading={isLoading}
             />
           )}
         </div>
