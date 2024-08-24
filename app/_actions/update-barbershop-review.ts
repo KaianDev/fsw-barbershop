@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { auth } from "../_lib/auth"
 import { db } from "../_lib/prisma"
 
@@ -19,6 +20,10 @@ export const updateBarbershopReview = async ({
 
   await db.barbershopReview.update({
     where: {
+      userId_barbershopId: {
+        barbershopId,
+        userId: session.user.id,
+      },
       barbershopId,
       userId: session.user.id,
     },
@@ -26,4 +31,6 @@ export const updateBarbershopReview = async ({
       rating,
     },
   })
+
+  revalidatePath("/booking")
 }

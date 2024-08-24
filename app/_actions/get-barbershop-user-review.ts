@@ -17,8 +17,10 @@ export const getBarbershopUserReview = async ({
 
   const review = await db.barbershopReview.findUnique({
     where: {
-      barbershopId,
-      userId: session.user.id,
+      userId_barbershopId: {
+        userId: session.user.id,
+        barbershopId,
+      },
     },
     select: {
       rating: true,
