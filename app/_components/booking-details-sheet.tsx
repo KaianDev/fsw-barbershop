@@ -20,6 +20,7 @@ import { ptBR } from "date-fns/locale"
 import { PhoneItem } from "./phone-item"
 import { BarbershopMap } from "./barbershop-map"
 import { Button } from "./ui/button"
+import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
 
 interface BookingDetailsSheetProps {
   booking: Prisma.BookingGetPayload<{
@@ -37,6 +38,7 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
   const pathname = usePathname()
   const [isBookingDetailsOpen, setIsBookingDetailsOpen] = useState(false)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
+  useState(false)
 
   const [debouncedValue] = useDebounce(isSmallScreen, 200)
 
@@ -68,57 +70,60 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
   const isConfirmedBooking = isFuture(booking.date)
 
   return (
-    <Sheet open={isBookingDetailsOpen} onOpenChange={setIsBookingDetailsOpen}>
-      <button className="w-full" onClick={handleBookingItemClick}>
-        <BookingItem booking={booking} />
-      </button>
+    <>
+      <Sheet open={isBookingDetailsOpen} onOpenChange={setIsBookingDetailsOpen}>
+        <button className="w-full" onClick={handleBookingItemClick}>
+          <BookingItem booking={booking} />
+        </button>
 
-      <SheetContent className="px-0">
-        <SheetHeader>
-          <SheetTitle className="px-5 text-start">
-            Informações da Reserva
-          </SheetTitle>
-        </SheetHeader>
+        <SheetContent className="px-0">
+          <SheetHeader>
+            <SheetTitle className="px-5 text-start">
+              Informações da Reserva
+            </SheetTitle>
+          </SheetHeader>
 
-        <Separator />
+          <Separator />
 
-        <div className="flex flex-col gap-6 px-5">
-          <BarbershopMap barbershop={booking.service.barbershop} />
+          <div className="flex flex-col gap-6 px-5">
+            <BarbershopMap barbershop={booking.service.barbershop} />
 
-          <div className="space-y-3">
-            <BookingStatusBadge isConfirmedBooking={isConfirmedBooking} />
+            <div className="space-y-3">
+              <BookingStatusBadge isConfirmedBooking={isConfirmedBooking} />
 
-            <ServiceDetails
-              barbershop={booking.service.barbershop}
-              service={booking.service}
-              date={booking.date}
-              time={format(booking.date, "HH:mm", { locale: ptBR })}
-            />
+              <ServiceDetails
+                barbershop={booking.service.barbershop}
+                service={booking.service}
+                date={booking.date}
+                time={format(booking.date, "HH:mm", { locale: ptBR })}
+              />
+            </div>
+
+            <div className="space-y-3">
+              {booking.service.barbershop.phones.map((phone, index) => (
+                <PhoneItem key={index} phone={phone} />
+              ))}
+            </div>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <SheetClose asChild>
+                <Button size="sm" variant="secondary">
+                  Voltar
+                </Button>
+              </SheetClose>
+              {isConfirmedBooking ? (
+                <CancelBookingAlertDialog
+                  bookingId={booking.id}
+                  sheetClose={setIsBookingDetailsOpen}
+                />
+              ) : (
+                <Button size="sm" variant="default">
+                  Avaliar
+                </Button>
+              )}
+            </div>
           </div>
-
-          <div className="space-y-3">
-            {booking.service.barbershop.phones.map((phone, index) => (
-              <PhoneItem key={index} phone={phone} />
-            ))}
-          </div>
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            <SheetClose asChild>
-              <Button size="sm" variant="secondary">
-                Voltar
-              </Button>
-            </SheetClose>
-            {isConfirmedBooking ? (
-              <Button size="sm" variant="destructive">
-                Cancelar Reserva
-              </Button>
-            ) : (
-              <Button size="sm" variant="default">
-                Avaliar
-              </Button>
-            )}
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+    </>
   )
 }

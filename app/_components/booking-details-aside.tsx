@@ -5,8 +5,8 @@ import { format, isFuture } from "date-fns"
 import { Card, CardContent } from "./ui/card"
 import { BarbershopDetails } from "./barbershop-details"
 import { ServiceDetails } from "./service-details"
-import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
+import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
 
 interface BookingDetailsAsideProps {
   booking: Prisma.BookingGetPayload<{
@@ -42,9 +42,7 @@ export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
         />
 
         {isConfirmedBooking && (
-          <Button variant="destructive" className="mt-5 w-full">
-            Cancelar reserva
-          </Button>
+          <CancelBookingAlertDialog bookingId={booking.id} />
         )}
       </CardContent>
     </Card>
