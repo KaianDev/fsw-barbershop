@@ -17,7 +17,6 @@ interface BookingPageProps {
 }
 
 const BookingPage = async ({ searchParams }: BookingPageProps) => {
-  // TODO: Abrir dialog de login quando clicar em ver agendamentos
   const concludedBookings = await getConcludedBookings()
   const confirmedBookings = await getConfirmedBookings()
 

@@ -19,6 +19,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  ratings BarbershopReview[]
 }
 
 model Account {
@@ -70,6 +72,7 @@ model Barbershop {
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
   services    BarbershopService[]
+  ratings     BarbershopReview[]
 }
 
 model BarbershopService {
@@ -81,6 +84,18 @@ model BarbershopService {
   barbershopId String
   barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
   bookings     Booking[]
+}
+
+model BarbershopReview {
+  id           String   @id @default(uuid())
+  barbershopId String
+  userId       String
+  rating       Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id])
+  barbershop Barbershop @relation(fields: [barbershopId], references: [id])
 }
 
 model Booking {
