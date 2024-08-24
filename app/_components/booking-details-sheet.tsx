@@ -1,6 +1,13 @@
 "use client"
 
+import { useLayoutEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Prisma } from "@prisma/client"
+import { format, isFuture } from "date-fns"
+import { ptBR } from "date-fns/locale"
+import { useDebounce } from "use-debounce"
+
+// Components
 import {
   Sheet,
   SheetClose,
@@ -9,14 +16,9 @@ import {
   SheetTitle,
 } from "./ui/sheet"
 import { BookingItem } from "./booking-item"
-import { useLayoutEffect, useState } from "react"
-import { useDebounce } from "use-debounce"
-import { usePathname } from "next/navigation"
 import { Separator } from "./separator"
 import { BookingStatusBadge } from "./booking-status-badge"
 import { ServiceDetails } from "./service-details"
-import { format, isFuture } from "date-fns"
-import { ptBR } from "date-fns/locale"
 import { PhoneItem } from "./phone-item"
 import { BarbershopMap } from "./barbershop-map"
 import { Button } from "./ui/button"
@@ -35,7 +37,9 @@ interface BookingDetailsSheetProps {
 }
 
 export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
-  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
   const [isBookingDetailsOpen, setIsBookingDetailsOpen] = useState(false)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
   useState(false)
@@ -61,10 +65,10 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
     if (debouncedValue) {
       return setIsBookingDetailsOpen(true)
     }
-    if (debouncedValue && pathname === "/") {
-      return setIsBookingDetailsOpen(true)
-    }
-    alert(JSON.stringify(debouncedValue, null, 2))
+
+    const params = new URLSearchParams(searchParams)
+    params.set("bookingId", booking.id)
+    router.push(`/bookings?${params.toString()}`)
   }
 
   const isConfirmedBooking = isFuture(booking.date)

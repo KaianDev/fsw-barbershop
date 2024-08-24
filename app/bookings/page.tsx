@@ -6,13 +6,47 @@ import { BookingDetailsSheet } from "../_components/booking-details-sheet"
 // Utilities
 import { getConcludedBookings } from "../_actions/get-concluded-bookings"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
+import { Suspense } from "react"
 
-const BookingPage = async () => {
+interface BookingPageProps {
+  searchParams: {
+    bookingId?: string
+  }
+}
+
+const BookingPage = async ({ searchParams }: BookingPageProps) => {
   // TODO: Abrir dialog de login quando clicar em ver agendamentos
   const concludedBookings = await getConcludedBookings()
   const confirmedBookings = await getConfirmedBookings()
 
-  console.log(concludedBookings.length, confirmedBookings.length)
+  const getCurrentBooking = () => {
+    if (!searchParams.bookingId) {
+      if (confirmedBookings.length > 0) {
+        return confirmedBookings[0]
+      }
+      if (concludedBookings.length > 0) {
+        return concludedBookings[0]
+      }
+    }
+
+    const confirmedBooking = confirmedBookings.find(
+      (booking) => booking.id === searchParams.bookingId,
+    )
+
+    if (confirmedBooking) {
+      return confirmedBooking
+    }
+
+    const concludedBooking = concludedBookings.find(
+      (booking) => booking.id === searchParams.bookingId,
+    )
+
+    if (concludedBooking) {
+      return concludedBooking
+    }
+  }
+
+  const currentBooking = getCurrentBooking()
 
   return (
     <div>
@@ -27,7 +61,9 @@ const BookingPage = async () => {
             <div className="space-y-3">
               <h2 className="title-separator md:text-gray-500">Confirmados</h2>
               {confirmedBookings.map((booking) => (
-                <BookingDetailsSheet key={booking.id} booking={booking} />
+                <Suspense key={booking.id}>
+                  <BookingDetailsSheet booking={booking} />
+                </Suspense>
               ))}
             </div>
           )}
@@ -36,15 +72,23 @@ const BookingPage = async () => {
             <div className="space-y-3">
               <h2 className="title-separator md:text-gray-500">Finalizados</h2>
               {concludedBookings.map((booking) => (
-                <BookingDetailsSheet key={booking.id} booking={booking} />
+                <Suspense key={booking.id}>
+                  <BookingDetailsSheet booking={booking} />
+                </Suspense>
               ))}
+            </div>
+          )}
+
+          {confirmedBookings.length === 0 && concludedBookings.length === 0 && (
+            <div className="flex h-96 items-center justify-center">
+              <p className="text-gray-500">Nenhum agendamento encontrado</p>
             </div>
           )}
         </div>
 
-        {(confirmedBookings.length > 0 || concludedBookings.length > 0) && (
+        {currentBooking && (
           <div className="mt-10 hidden flex-1 md:block">
-            <BookingDetailsAside booking={confirmedBookings[0]} />
+            <BookingDetailsAside booking={currentBooking} />
           </div>
         )}
       </div>
