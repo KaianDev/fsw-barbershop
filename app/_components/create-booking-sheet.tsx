@@ -107,11 +107,11 @@ export const CreateBookingSheet = ({
       return
     }
 
-    const [hour, minute] = selectedTime.split(":")
+    const [hours, minutes] = selectedTime.split(":").map((i) => Number(i))
 
     const bookingDate = set(selectedDay, {
-      hours: Number(hour),
-      minutes: Number(minute),
+      hours,
+      minutes,
     })
 
     await createBooking(
@@ -138,7 +138,7 @@ export const CreateBookingSheet = ({
   }
 
   const timeList = useMemo(() => {
-    if (!selectedDay) return []
+    if (!selectedDay || !bookings) return []
     return getTimeList({ bookings, selectedDay })
   }, [bookings, selectedDay])
 
@@ -197,7 +197,7 @@ export const CreateBookingSheet = ({
             <>
               <Separator />
               <div className="no-scrollbar flex gap-3 overflow-x-auto px-5">
-                {isLoading &&
+                {!isLoading &&
                   timeList.length > 0 &&
                   timeList.map((time) => (
                     <Button
@@ -214,7 +214,7 @@ export const CreateBookingSheet = ({
                     </Button>
                   ))}
 
-                {timeList.length === 0 && (
+                {!isLoading && timeList.length === 0 && (
                   <p className="flex h-9 w-full items-center justify-center text-center text-sm">
                     Nenhum horário disponível para esse dia
                   </p>
