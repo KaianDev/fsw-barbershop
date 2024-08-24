@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
 import { set, isAfter, startOfDay, isPast, isToday } from "date-fns"
-import { CheckIcon } from "lucide-react"
+import { CheckIcon, LoaderIcon } from "lucide-react"
 
 // Components
 import { Button, buttonVariants } from "./ui/button"
@@ -29,8 +29,9 @@ import { ServiceDetails } from "./service-details"
 
 // Utilities
 import { cn } from "../_lib/utils"
-import { createBooking } from "../_actions/create-booking"
-import { getBookings } from "../_actions/get-bookings"
+import { useGetBookings } from "../_hooks/bookings/use-get-bookings"
+import { useCreateBooking } from "../_hooks/bookings/use-create-booking"
+import { queryClient } from "../_lib/tanstack"
 
 interface CreateBookingSheetProps {
   service: BarbershopService
@@ -49,7 +50,6 @@ const BOOKING_TIME = [
   "16:00",
   "16:45",
   "17:30",
-  "18:15",
 ]
 
 interface TimeListProps {
@@ -93,46 +93,52 @@ export const CreateBookingSheet = ({
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
   )
-  const [bookings, setBookings] = useState<Booking[]>([])
+
+  const { data: bookings, isLoading } = useGetBookings({
+    enabled: !!selectedDay,
+    serviceId: service.id,
+    date: selectedDay,
+  })
+
+  const { mutateAsync: createBooking } = useCreateBooking()
 
   const onBookingSubmit = async () => {
     if (!selectedDay || !selectedTime) {
       return
     }
 
-    const [hour, minute] = selectedTime.split(":")
+    const [hours, minutes] = selectedTime.split(":").map((i) => Number(i))
 
     const bookingDate = set(selectedDay, {
-      hours: Number(hour),
-      minutes: Number(minute),
+      hours,
+      minutes,
     })
 
-    try {
-      await createBooking({
+    await createBooking(
+      {
         date: bookingDate,
         serviceId: service.id,
-      })
-      setIsOpenAlertDialog(true)
-      setIsOpenSheet(false)
-    } catch (error) {
-      console.error("Error creating booking", error)
-    }
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "bookings",
+              { serviceId: service.id, date: selectedDay },
+            ],
+          })
+          setIsOpenSheet(false)
+          setIsOpenAlertDialog(true)
+        },
+        onError: (error: any) => {
+          console.error("Error creating booking", error)
+        },
+      },
+    )
   }
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      if (!selectedDay) return
-      const bookings = await getBookings({
-        serviceId: service.id,
-        date: selectedDay,
-      })
-      setBookings(bookings)
-    }
-    fetchBookings()
-  }, [selectedDay, service.id])
-
   const timeList = useMemo(() => {
-    if (!selectedDay) return []
+    if (!selectedDay || !bookings) return []
     return getTimeList({ bookings, selectedDay })
   }, [bookings, selectedDay])
 
@@ -140,7 +146,6 @@ export const CreateBookingSheet = ({
     setIsOpenSheet(isOpen)
     setSelectedDay(undefined)
     setSelectedTime(undefined)
-    setBookings([])
   }
 
   return (
@@ -151,7 +156,10 @@ export const CreateBookingSheet = ({
             Reservar
           </Button>
         </SheetTrigger>
-        <SheetContent className="px-0">
+        <SheetContent
+          className="px-0"
+          aria-describedby={"Menu lateral de fazer reserva"}
+        >
           <SheetHeader className="px-5 text-start">
             <SheetTitle>Fazer Reserva</SheetTitle>
           </SheetHeader>
@@ -189,7 +197,8 @@ export const CreateBookingSheet = ({
             <>
               <Separator />
               <div className="no-scrollbar flex gap-3 overflow-x-auto px-5">
-                {timeList.length > 0 ? (
+                {!isLoading &&
+                  timeList.length > 0 &&
                   timeList.map((time) => (
                     <Button
                       key={time}
@@ -203,11 +212,17 @@ export const CreateBookingSheet = ({
                     >
                       {time}
                     </Button>
-                  ))
-                ) : (
+                  ))}
+
+                {!isLoading && timeList.length === 0 && (
                   <p className="flex h-9 w-full items-center justify-center text-center text-sm">
                     Nenhum horário disponível para esse dia
                   </p>
+                )}
+                {isLoading && (
+                  <div className="flex h-9 w-full items-center justify-center">
+                    <LoaderIcon size={20} className="animate-spin" />
+                  </div>
                 )}
               </div>
               <Separator />
