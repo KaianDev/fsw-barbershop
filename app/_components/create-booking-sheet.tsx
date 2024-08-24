@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Barbershop, BarbershopService, Booking } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
-import { set, isAfter, startOfDay } from "date-fns"
+import { set, isAfter, startOfDay, isPast, isToday } from "date-fns"
 import { CheckIcon } from "lucide-react"
 
 // Components
@@ -32,7 +32,7 @@ import { cn } from "../_lib/utils"
 import { createBooking } from "../_actions/create-booking"
 import { getBookings } from "../_actions/get-bookings"
 
-interface BookingSheetProps {
+interface CreateBookingSheetProps {
   service: BarbershopService
   barbershop: Pick<Barbershop, "name">
 }
@@ -54,15 +54,24 @@ const BOOKING_TIME = [
 
 interface TimeListProps {
   bookings: Booking[]
+  selectedDay: Date
 }
 
-const getTimeList = ({ bookings }: TimeListProps) => {
+const getTimeList = ({ bookings, selectedDay }: TimeListProps) => {
   const timeList = BOOKING_TIME.filter((time) => {
-    const [hours, minutes] = time.split(":")
+    const [hours, minutes] = time.split(":").map((i) => Number(i))
+
+    const isPastTimeOnCurrentDay =
+      isPast(set(new Date(), { hours, minutes })) && isToday(selectedDay)
+
+    if (isPastTimeOnCurrentDay) {
+      return false
+    }
+
     const hasBookingOnCurrentTime = bookings.some(
       (booking) =>
-        booking.date.getHours() === Number(hours) &&
-        booking.date.getMinutes() === Number(minutes),
+        booking.date.getHours() === hours &&
+        booking.date.getMinutes() === minutes,
     )
 
     if (hasBookingOnCurrentTime) {
@@ -73,7 +82,10 @@ const getTimeList = ({ bookings }: TimeListProps) => {
   return timeList
 }
 
-export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
+export const CreateBookingSheet = ({
+  service,
+  barbershop,
+}: CreateBookingSheetProps) => {
   const [isOpenSheet, setIsOpenSheet] = useState(false)
   const [isOpenAlertDialog, setIsOpenAlertDialog] = useState(false)
 
@@ -121,7 +133,7 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
 
   const timeList = useMemo(() => {
     if (!selectedDay) return []
-    return getTimeList({ bookings })
+    return getTimeList({ bookings, selectedDay })
   }, [bookings, selectedDay])
 
   const handleBookingSheetOpen = (isOpen: boolean) => {
@@ -177,20 +189,26 @@ export const BookingSheet = ({ service, barbershop }: BookingSheetProps) => {
             <>
               <Separator />
               <div className="no-scrollbar flex gap-3 overflow-x-auto px-5">
-                {timeList.map((time) => (
-                  <Button
-                    key={time}
-                    variant={selectedTime === time ? "default" : "outline"}
-                    size="sm"
-                    className={cn(
-                      selectedTime === time && "border border-primary",
-                      "rounded-full",
-                    )}
-                    onClick={() => setSelectedTime(time)}
-                  >
-                    {time}
-                  </Button>
-                ))}
+                {timeList.length > 0 ? (
+                  timeList.map((time) => (
+                    <Button
+                      key={time}
+                      variant={selectedTime === time ? "default" : "outline"}
+                      size="sm"
+                      className={cn(
+                        selectedTime === time && "border border-primary",
+                        "rounded-full",
+                      )}
+                      onClick={() => setSelectedTime(time)}
+                    >
+                      {time}
+                    </Button>
+                  ))
+                ) : (
+                  <p className="flex h-9 w-full items-center justify-center text-center text-sm">
+                    Nenhum horário disponível para esse dia
+                  </p>
+                )}
               </div>
               <Separator />
             </>

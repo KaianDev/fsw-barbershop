@@ -3,7 +3,7 @@ import Image from "next/image"
 
 // Components
 import { Card, CardContent } from "./ui/card"
-import { BookingSheet } from "./booking-sheet"
+import { CreateBookingSheet } from "./create-booking-sheet"
 import { Button } from "./ui/button"
 import { DialogLogin } from "./dialog-login"
 import { auth } from "../_lib/auth"
@@ -45,7 +45,7 @@ export const ServiceItem = async ({
               }).format(Number(service.price))}
             </span>
             {session?.user ? (
-              <BookingSheet service={service} barbershop={barbershop} />
+              <CreateBookingSheet service={service} barbershop={barbershop} />
             ) : (
               <DialogLogin>
                 <Button variant="secondary" size="sm">
