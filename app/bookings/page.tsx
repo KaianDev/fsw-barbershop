@@ -1,4 +1,5 @@
 import { validate } from "uuid"
+import { Suspense } from "react"
 
 // Components
 import { Header } from "../_components/header"
@@ -8,7 +9,6 @@ import { BookingDetailsSheet } from "../_components/booking-details-sheet"
 // Utilities
 import { getConcludedBookings } from "../_actions/get-concluded-bookings"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
-import { Suspense } from "react"
 
 interface BookingPageProps {
   searchParams: {
@@ -17,7 +17,6 @@ interface BookingPageProps {
 }
 
 const BookingPage = async ({ searchParams }: BookingPageProps) => {
-  // TODO: Abrir dialog de login quando clicar em ver agendamentos
   const concludedBookings = await getConcludedBookings()
   const confirmedBookings = await getConfirmedBookings()
 

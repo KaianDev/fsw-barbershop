@@ -1,3 +1,5 @@
+"use client"
+
 import { Prisma } from "@prisma/client"
 import { format, isFuture } from "date-fns"
 
@@ -7,6 +9,10 @@ import { BarbershopDetails } from "./barbershop-details"
 import { ServiceDetails } from "./service-details"
 import { Badge } from "./ui/badge"
 import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
+import { ReviewBarbershop } from "./review-barbershop"
+
+// Utilities
+import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"
 
 interface BookingDetailsAsideProps {
   booking: Prisma.BookingGetPayload<{
@@ -23,6 +29,11 @@ interface BookingDetailsAsideProps {
 export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
   const time = format(booking.date, "HH:mm")
   const isConfirmedBooking = isFuture(booking.date)
+
+  const { data: rating, isLoading } = useBarbershopUserReview({
+    barbershopId: booking.service.barbershop.id,
+    enabled: true,
+  })
 
   return (
     <Card>
@@ -41,9 +52,17 @@ export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
           time={time}
         />
 
-        {isConfirmedBooking && (
-          <CancelBookingAlertDialog bookingId={booking.id} />
-        )}
+        <div className="mt-12">
+          {isConfirmedBooking ? (
+            <CancelBookingAlertDialog bookingId={booking.id} />
+          ) : (
+            <ReviewBarbershop
+              barbershop={booking.service.barbershop}
+              ratingAverage={rating}
+              isLoading={isLoading}
+            />
+          )}
+        </div>
       </CardContent>
     </Card>
   )

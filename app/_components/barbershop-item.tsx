@@ -3,12 +3,18 @@ import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import Image from "next/image"
 import Link from "next/link"
+import { getBarbershopReview } from "../_actions/get-barbershop-review"
+import { Badge } from "./ui/badge"
+import { StarIcon } from "lucide-react"
+import { formatRating } from "../_helpers/format-rating"
 
 interface BarbershopItemProps {
   barbershop: Barbershop
 }
 
-export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
+export const BarbershopItem = async ({ barbershop }: BarbershopItemProps) => {
+  const review = await getBarbershopReview({ barbershopId: barbershop.id })
+
   return (
     <Card className="min-w-[167px] shrink-0 overflow-hidden rounded-2xl md:min-w-[213px]">
       <CardContent className="p-0">
@@ -21,6 +27,10 @@ export const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
               fill
               className="rounded-xl object-cover"
             />
+            <Badge className="text absolute left-2 top-2 h-[25px] w-fit items-center gap-1 bg-tertiary/60 text-xs">
+              <StarIcon size={12} className="fill-primary stroke-primary" />
+              <span>{formatRating(review.avg)}</span>
+            </Badge>
           </div>
         </div>
         <div className="space-y-3 px-3 pb-3 md:pt-3">
