@@ -2,6 +2,7 @@
 
 import { db } from "../_lib/prisma"
 import { auth } from "../_lib/auth"
+import { revalidatePath } from "next/cache"
 
 interface AddBarbershopReviewProps {
   barbershopId: string
@@ -24,4 +25,6 @@ export const addBarbershopReview = async ({
       userId: session.user.id,
     },
   })
+
+  revalidatePath("/bookings")
 }
