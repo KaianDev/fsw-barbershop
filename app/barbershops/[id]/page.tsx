@@ -14,6 +14,8 @@ import { BarbershopAside } from "@/app/_components/barbershop-aside"
 
 // Utilities
 import { db } from "@/app/_lib/prisma"
+import { getBarbershopReview } from "@/app/_actions/get-barbershop-review"
+import { formatRating } from "@/app/_helpers/format-rating"
 
 interface BarbershopPageProps {
   params: {
@@ -35,6 +37,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   if (!barbershop) {
     return notFound()
   }
+
+  const review = await getBarbershopReview({ barbershopId: barbershop.id })
 
   return (
     <div>
@@ -86,9 +90,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
             <div className="hidden flex-col items-center gap-2 rounded-md bg-secondary px-5 py-2.5 md:flex">
               <div className="flex items-center gap-2 text-xl">
                 <StarIcon size={20} className="fill-primary text-primary" />
-                <span>5,0</span>
+                <span>{formatRating(review.avg)}</span>
               </div>
-              <p className="text-xs">889 avaliações</p>
+              <p className="text-xs">{`${review.count} ${review.count === 1 ? "avaliação" : "avaliações"}`}</p>
             </div>
 
             <div className="space-y-2 md:hidden">
@@ -98,7 +102,10 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               </div>
               <div className="flex items-center gap-2">
                 <StarIcon size={16} className="fill-primary text-primary" />
-                <p className="text-sm">5,0 (889 avaliações)</p>
+                <p className="text-sm">
+                  {formatRating(review.avg)}{" "}
+                  {`(${review.count} ${review.count === 1 ? "avaliação" : "avaliações"})`}
+                </p>
               </div>
             </div>
           </div>
