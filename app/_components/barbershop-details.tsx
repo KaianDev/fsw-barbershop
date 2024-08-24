@@ -21,8 +21,8 @@ export const BarbershopDetails = ({ barbershop }: BarbershopDetailsProps) => {
       </div>
       <Separator />
       <div className="space-y-2.5">
-        {barbershop.phones.map((phone) => (
-          <PhoneItem key={phone} phone={phone} />
+        {barbershop.phones.map((phone, index) => (
+          <PhoneItem key={index} phone={phone} />
         ))}
       </div>
       <Separator />
