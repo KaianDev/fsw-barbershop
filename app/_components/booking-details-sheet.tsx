@@ -23,6 +23,7 @@ import { PhoneItem } from "./phone-item"
 import { BarbershopMap } from "./barbershop-map"
 import { Button } from "./ui/button"
 import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
+import { ReviewBarbershop } from "./review-barbershop"
 
 interface BookingDetailsSheetProps {
   booking: Prisma.BookingGetPayload<{
@@ -120,9 +121,10 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
                   sheetClose={setIsBookingDetailsOpen}
                 />
               ) : (
-                <Button size="sm" variant="default">
-                  Avaliar
-                </Button>
+                <ReviewBarbershop
+                  barbershop={booking.service.barbershop}
+                  sheetClose={setIsBookingDetailsOpen}
+                />
               )}
             </div>
           </div>

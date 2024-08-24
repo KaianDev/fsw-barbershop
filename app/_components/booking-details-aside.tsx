@@ -7,6 +7,7 @@ import { BarbershopDetails } from "./barbershop-details"
 import { ServiceDetails } from "./service-details"
 import { Badge } from "./ui/badge"
 import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
+import { ReviewBarbershop } from "./review-barbershop"
 
 interface BookingDetailsAsideProps {
   booking: Prisma.BookingGetPayload<{
@@ -41,9 +42,13 @@ export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
           time={time}
         />
 
-        {isConfirmedBooking && (
-          <CancelBookingAlertDialog bookingId={booking.id} />
-        )}
+        <div className="mt-12">
+          {isConfirmedBooking ? (
+            <CancelBookingAlertDialog bookingId={booking.id} />
+          ) : (
+            <ReviewBarbershop barbershop={booking.service.barbershop} />
+          )}
+        </div>
       </CardContent>
     </Card>
   )
