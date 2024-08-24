@@ -25,6 +25,9 @@ import { Button } from "./ui/button"
 import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
 import { ReviewBarbershop } from "./review-barbershop"
 
+// Utilities
+import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"
+
 interface BookingDetailsSheetProps {
   booking: Prisma.BookingGetPayload<{
     include: {
@@ -73,6 +76,11 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
   }
 
   const isConfirmedBooking = isFuture(booking.date)
+
+  const { data: review } = useBarbershopUserReview({
+    barbershopId: booking.service.barbershop.id,
+    enabled: isBookingDetailsOpen,
+  })
 
   return (
     <>
@@ -124,6 +132,7 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
                 <ReviewBarbershop
                   barbershop={booking.service.barbershop}
                   sheetClose={setIsBookingDetailsOpen}
+                  ratingAverage={review}
                 />
               )}
             </div>

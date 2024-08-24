@@ -20,34 +20,84 @@ import {
 import { Button, buttonVariants } from "./ui/button"
 
 // Utilities
-import { cn } from "../_lib/utils"
-import { addBarbershopReview } from "../_actions/add-barbershop-review"
 import { toast } from "sonner"
+import { cn } from "../_lib/utils"
+import { queryClient } from "../_lib/tanstack"
+import { useAddBarbershopUserReview } from "../_hooks/review/use-add-barbershop-user-review"
+import { useUpdateBarbershopUserReview } from "../_hooks/review/use-upate-barbershop-user-review"
 
 interface ReviewBarbershopProps {
   barbershop: Pick<Barbershop, "name" | "id">
+  ratingAverage?: number
   sheetClose?: (v: boolean) => void
 }
 
 export const ReviewBarbershop = ({
   barbershop,
+  ratingAverage,
   sheetClose,
 }: ReviewBarbershopProps) => {
-  const [rating, setRating] = useState(0)
+  const [rating, setRating] = useState(ratingAverage || 0)
   const [hover, setHover] = useState<number | null>(null)
 
-  const handleAddReviewBarbershop = async () => {
-    try {
-      await addBarbershopReview({
+  const { mutateAsync: addReviewMutate } = useAddBarbershopUserReview()
+  const { mutateAsync: updateReviewMutate } = useUpdateBarbershopUserReview()
+
+  const addNewReview = async () => {
+    await addReviewMutate(
+      {
         barbershopId: barbershop.id,
         rating,
-      })
-      sheetClose?.(false)
-      toast.success("Avaliação enviada com sucesso!")
-      setRating(0)
-    } catch (error) {
-      console.log("Ocorreu um erro ao tentar avaliar uma barbearia", error)
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "barbershop-user-review",
+              { barbershopId: barbershop.id },
+            ],
+            exact: true,
+          })
+          toast.success("Avaliação enviada com sucesso!")
+        },
+        onError: (error) => {
+          console.log("Ocorreu um erro ao tentar avaliar uma barbearia", error)
+        },
+      },
+    )
+    sheetClose?.(false)
+  }
+
+  const updateReview = async () => {
+    await updateReviewMutate(
+      {
+        barbershopId: barbershop.id,
+        rating,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "barbershop-user-review",
+              { barbershopId: barbershop.id },
+            ],
+            exact: true,
+          })
+          toast.success("Avaliação atualizada com sucesso!")
+        },
+        onError: (error) => {
+          console.log("Ocorreu um erro ao tentar avaliar uma barbearia", error)
+        },
+      },
+    )
+    sheetClose?.(false)
+  }
+
+  const handleReviewBarbershop = async () => {
+    if (ratingAverage) {
+      return updateReview()
     }
+    addNewReview()
   }
 
   return (
@@ -115,7 +165,7 @@ export const ReviewBarbershop = ({
           </AlertDialogCancel>
           <AlertDialogAction
             className={cn(buttonVariants({ size: "sm" }))}
-            onClick={handleAddReviewBarbershop}
+            onClick={handleReviewBarbershop}
             disabled={rating === 0}
           >
             Confirmar
