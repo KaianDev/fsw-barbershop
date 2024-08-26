@@ -20,27 +20,51 @@ import { Button, buttonVariants } from "./ui/button"
 
 // Utilities
 import { cn } from "../_lib/utils"
-import { cancelBooking } from "../_actions/cancel-booking"
+import { useCancelBooking } from "../_hooks/bookings"
+import { queryClient } from "../_lib/tanstack"
+import { Prisma } from "@prisma/client"
 
 interface CancelBookingAlertDialogProps {
-  bookingId: string
+  booking: Prisma.BookingGetPayload<{
+    include: {
+      service: {
+        include: {
+          barbershop: true
+        }
+      }
+    }
+  }>
   sheetClose?: (v: boolean) => void
 }
 
 export const CancelBookingAlertDialog = ({
-  bookingId,
+  booking,
   sheetClose,
 }: CancelBookingAlertDialogProps) => {
+  const { mutateAsync: cancelBooking } = useCancelBooking()
+
   const router = useRouter()
   const handleCancelBooking = async () => {
-    try {
-      await cancelBooking({ bookingId })
-      sheetClose?.(false)
-      router.push("/bookings", { scroll: false })
-      toast.success("Reserva cancelada com sucesso")
-    } catch (error) {
-      console.error("Ocorreu um erro ao cancelar a reserva", error)
-    }
+    await cancelBooking(
+      { bookingId: booking.id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "bookings",
+              { serviceId: booking.service.id, date: booking.date },
+            ],
+          })
+          toast.success("Reserva cancelada com sucesso")
+        },
+        onError: (error) => {
+          toast.error("Erro ao cancelar reserva")
+          console.error("Erro ao cancelar reserva", error)
+        },
+      },
+    )
+    sheetClose?.(false)
+    router.push("/bookings", { scroll: false })
   }
 
   return (

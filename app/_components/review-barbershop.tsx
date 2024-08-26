@@ -66,7 +66,6 @@ export const ReviewBarbershop = ({
               "barbershop-user-review",
               { barbershopId: barbershop.id },
             ],
-            exact: true,
           })
           toast.success("Avaliação enviada com sucesso!")
         },
@@ -91,7 +90,6 @@ export const ReviewBarbershop = ({
               "barbershop-user-review",
               { barbershopId: barbershop.id },
             ],
-            exact: true,
           })
           toast.success("Avaliação atualizada com sucesso!")
         },
@@ -114,7 +112,7 @@ export const ReviewBarbershop = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button size="sm" className="w-full">
-          Avaliar
+          {ratingAverage ? "Reavaliar" : "Avaliar"}
         </Button>
       </AlertDialogTrigger>
 

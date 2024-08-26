@@ -54,7 +54,7 @@ export const BookingDetailsAside = ({ booking }: BookingDetailsAsideProps) => {
 
         <div className="mt-12">
           {isConfirmedBooking ? (
-            <CancelBookingAlertDialog bookingId={booking.id} />
+            <CancelBookingAlertDialog booking={booking} />
           ) : (
             <ReviewBarbershop
               barbershop={booking.service.barbershop}
