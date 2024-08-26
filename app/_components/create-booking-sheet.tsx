@@ -29,8 +29,8 @@ import { ServiceDetails } from "./service-details"
 
 // Utilities
 import { cn } from "../_lib/utils"
-import { useGetBookings } from "../_hooks/bookings/use-get-bookings"
-import { useCreateBooking } from "../_hooks/bookings/use-create-booking"
+import { useGetBookings } from "../_hooks/bookings"
+import { useCreateBooking } from "../_hooks/bookings"
 import { queryClient } from "../_lib/tanstack"
 
 interface CreateBookingSheetProps {
@@ -157,7 +157,7 @@ export const CreateBookingSheet = ({
           </Button>
         </SheetTrigger>
         <SheetContent
-          className="px-0"
+          className="overflow-y-auto px-0"
           aria-describedby={"Menu lateral de fazer reserva"}
         >
           <SheetHeader className="px-5 text-start">
@@ -177,7 +177,7 @@ export const CreateBookingSheet = ({
               }
               classNames={{
                 root: "w-full !py-0",
-                cell: "w-full h-9",
+                cell: "w-full h-7",
                 day: "w-full h-full rounded-full",
                 caption: "flex items-center px-2 justify-between",
                 caption_label: "font-bold",

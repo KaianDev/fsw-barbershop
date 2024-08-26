@@ -125,7 +125,7 @@ export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
               </SheetClose>
               {isConfirmedBooking ? (
                 <CancelBookingAlertDialog
-                  bookingId={booking.id}
+                  booking={booking}
                   sheetClose={setIsBookingDetailsOpen}
                 />
               ) : (
