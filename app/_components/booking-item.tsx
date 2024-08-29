@@ -3,9 +3,9 @@ import { format, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
 // Components
-import { Avatar, AvatarImage } from "./ui/avatar"
-import { Card, CardContent } from "./ui/card"
-import { BookingStatusBadge } from "./booking-status-badge"
+import { Avatar, AvatarImage } from "@/_components/ui/avatar"
+import { Card, CardContent } from "@/_components/ui/card"
+import { BookingStatusBadge } from "@/_components/booking-status-badge"
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{

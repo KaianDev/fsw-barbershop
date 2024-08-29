@@ -15,8 +15,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog"
-import { Button, buttonVariants } from "./ui/button"
+} from "@/_components/ui/alert-dialog"
+import { Button, buttonVariants } from "@/_components/ui/button"
 
 // Utilities
 import { cn } from "../_lib/utils"

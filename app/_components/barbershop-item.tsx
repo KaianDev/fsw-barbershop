@@ -4,9 +4,9 @@ import { StarIcon } from "lucide-react"
 import type { Barbershop } from "@prisma/client"
 
 // Components
-import { Badge } from "./ui/badge"
-import { Button } from "./ui/button"
-import { Card, CardContent } from "./ui/card"
+import { Badge } from "@/_components/ui/badge"
+import { Button } from "@/_components/ui/button"
+import { Card, CardContent } from "@/_components/ui/card"
 
 // Utilities
 import { getBarbershopReview } from "../_actions/get-barbershop-review"

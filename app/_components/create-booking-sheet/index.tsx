@@ -6,16 +6,16 @@ import { isAfter, startOfDay } from "date-fns"
 import { CheckIcon, LoaderIcon } from "lucide-react"
 
 // Components
-import { Button, buttonVariants } from "../ui/button"
+import { Button, buttonVariants } from "@/_components/ui/button"
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTrigger,
   SheetTitle,
-} from "../ui/sheet"
-import { Separator } from "../separator"
-import { Calendar } from "../ui/calendar"
+} from "@/_components/ui/sheet"
+import { Separator } from "@/_components/separator"
+import { Calendar } from "@/_components/ui/calendar"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -23,8 +23,8 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogTitle,
-} from "../ui/alert-dialog"
-import { ServiceDetails } from "../service-details"
+} from "@/_components/ui/alert-dialog"
+import { ServiceDetails } from "@/_components/service-details"
 
 // Utilities
 import { cn } from "../../_lib/utils"

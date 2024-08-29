@@ -1,9 +1,9 @@
 import { Barbershop } from "@prisma/client"
 
 // Components
-import { Separator } from "./separator"
-import { PhoneItem } from "./phone-item"
-import { BarbershopMap } from "./barbershop-map"
+import { Separator } from "@/_components/separator"
+import { PhoneItem } from "@/_components/phone-item"
+import { BarbershopMap } from "@/_components/barbershop-map"
 
 interface BarbershopDetailsProps {
   barbershop: Barbershop

@@ -3,7 +3,7 @@
 import { signOut } from "next-auth/react"
 
 // Components
-import { Button } from "./ui/button"
+import { Button } from "@/_components/ui/button"
 import {
   Dialog,
   DialogClose,
@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog"
+} from "@/_components/ui/dialog"
 
 interface DialogLogoutProps extends React.PropsWithChildren {}
 
