@@ -14,9 +14,9 @@ import { cn } from "./_lib/utils"
 import { auth } from "./_lib/auth"
 
 // Utilities
-import { db } from "./_lib/prisma"
 import { QUICK_SEARCH } from "./_constants/quick-search"
 import { getConfirmedBookings } from "./_actions/get-confirmed-bookings"
+import { getBarbershops } from "./_actions/get-barbershops"
 
 const Home = async () => {
   const session = await auth()
@@ -24,12 +24,8 @@ const Home = async () => {
 
   const hasBooking = confirmedBookings.length > 0 && !!session?.user
 
-  const recommendedBarbershops = await db.barbershop.findMany({})
-  const popularBarbershops = await db.barbershop.findMany({
-    orderBy: {
-      name: "desc",
-    },
-  })
+  const recommendedBarbershops = await getBarbershops({ isRecommends: true })
+  const popularBarbershops = await getBarbershops({})
 
   return (
     <div>
