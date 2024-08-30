@@ -10,13 +10,13 @@ import { BookingDetailsSheet } from "../_components/booking-details-sheet"
 import { getConcludedBookings } from "../_actions/get-concluded-bookings"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
 
-interface BookingPageProps {
+interface BookingPagesProps {
   searchParams: {
     bookingId?: string
   }
 }
 
-const BookingPage = async ({ searchParams }: BookingPageProps) => {
+const BookingsPage = async ({ searchParams }: BookingPagesProps) => {
   const concludedBookings = await getConcludedBookings()
   const confirmedBookings = await getConfirmedBookings()
 
@@ -97,4 +97,4 @@ const BookingPage = async ({ searchParams }: BookingPageProps) => {
   )
 }
 
-export default BookingPage
+export default BookingsPage
