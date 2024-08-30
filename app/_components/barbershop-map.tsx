@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Barbershop } from "@prisma/client"
 
 // Components
-import { Avatar, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarImage } from "@/_components/ui/avatar"
 
 interface BarbershopMapProps {
   barbershop: Barbershop

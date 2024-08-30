@@ -2,7 +2,7 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
 // Components
-import { Card, CardContent } from "./ui/card"
+import { Card, CardContent } from "@/_components/ui/card"
 import { Barbershop, BarbershopService } from "@prisma/client"
 
 interface ServiceDetailsProps {

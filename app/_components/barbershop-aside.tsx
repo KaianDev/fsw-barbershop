@@ -2,9 +2,9 @@ import Image from "next/image"
 import { Barbershop } from "@prisma/client"
 
 // Components
-import { Card, CardContent } from "./ui/card"
-import { Separator } from "./separator"
-import { BarbershopDetails } from "./barbershop-details"
+import { Card, CardContent } from "@/_components/ui/card"
+import { Separator } from "@/_components/separator"
+import { BarbershopDetails } from "@/_components/barbershop-details"
 
 interface BarbershopAsideProps {
   barbershop: Barbershop

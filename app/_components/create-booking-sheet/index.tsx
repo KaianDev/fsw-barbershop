@@ -1,22 +1,21 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { Barbershop, BarbershopService, Booking } from "@prisma/client"
+import { Barbershop, BarbershopService } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
-import { set, isAfter, startOfDay, isPast, isToday } from "date-fns"
+import { isAfter, startOfDay } from "date-fns"
 import { CheckIcon, LoaderIcon } from "lucide-react"
 
 // Components
-import { Button, buttonVariants } from "./ui/button"
+import { Button, buttonVariants } from "@/_components/ui/button"
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTrigger,
   SheetTitle,
-} from "./ui/sheet"
-import { Separator } from "./separator"
-import { Calendar } from "./ui/calendar"
+} from "@/_components/ui/sheet"
+import { Separator } from "@/_components/separator"
+import { Calendar } from "@/_components/ui/calendar"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -24,14 +23,12 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogTitle,
-} from "./ui/alert-dialog"
-import { ServiceDetails } from "./service-details"
+} from "@/_components/ui/alert-dialog"
+import { ServiceDetails } from "@/_components/service-details"
 
 // Utilities
-import { cn } from "../_lib/utils"
-import { useGetBookings } from "../_hooks/bookings"
-import { useCreateBooking } from "../_hooks/bookings"
-import { queryClient } from "../_lib/tanstack"
+import { cn } from "../../_lib/utils"
+import { useComponent } from "./use-component"
 
 interface CreateBookingSheetProps {
   service: BarbershopService
@@ -52,101 +49,23 @@ const BOOKING_TIME = [
   "17:30",
 ]
 
-interface TimeListProps {
-  bookings: Booking[]
-  selectedDay: Date
-}
-
-const getTimeList = ({ bookings, selectedDay }: TimeListProps) => {
-  const timeList = BOOKING_TIME.filter((time) => {
-    const [hours, minutes] = time.split(":").map((i) => Number(i))
-
-    const isPastTimeOnCurrentDay =
-      isPast(set(new Date(), { hours, minutes })) && isToday(selectedDay)
-
-    if (isPastTimeOnCurrentDay) {
-      return false
-    }
-
-    const hasBookingOnCurrentTime = bookings.some(
-      (booking) =>
-        booking.date.getHours() === hours &&
-        booking.date.getMinutes() === minutes,
-    )
-
-    if (hasBookingOnCurrentTime) {
-      return false
-    }
-    return true
-  })
-  return timeList
-}
-
 export const CreateBookingSheet = ({
   service,
   barbershop,
 }: CreateBookingSheetProps) => {
-  const [isOpenSheet, setIsOpenSheet] = useState(false)
-  const [isOpenAlertDialog, setIsOpenAlertDialog] = useState(false)
-
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
-  const [selectedTime, setSelectedTime] = useState<string | undefined>(
-    undefined,
-  )
-
-  const { data: bookings, isLoading } = useGetBookings({
-    enabled: !!selectedDay,
-    serviceId: service.id,
-    date: selectedDay,
-  })
-
-  const { mutateAsync: createBooking } = useCreateBooking()
-
-  const onBookingSubmit = async () => {
-    if (!selectedDay || !selectedTime) {
-      return
-    }
-
-    const [hours, minutes] = selectedTime.split(":").map((i) => Number(i))
-
-    const bookingDate = set(selectedDay, {
-      hours,
-      minutes,
-    })
-
-    await createBooking(
-      {
-        date: bookingDate,
-        serviceId: service.id,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: [
-              "bookings",
-              { serviceId: service.id, date: selectedDay },
-            ],
-          })
-          setIsOpenSheet(false)
-          setIsOpenAlertDialog(true)
-        },
-        onError: (error: any) => {
-          console.error("Error creating booking", error)
-        },
-      },
-    )
-  }
-
-  const timeList = useMemo(() => {
-    if (!selectedDay || !bookings) return []
-    return getTimeList({ bookings, selectedDay })
-  }, [bookings, selectedDay])
-
-  const handleBookingSheetOpen = (isOpen: boolean) => {
-    setIsOpenSheet(isOpen)
-    setSelectedDay(undefined)
-    setSelectedTime(undefined)
-  }
+  const {
+    isLoading,
+    isOpenAlertDialog,
+    isOpenSheet,
+    selectedDay,
+    selectedTime,
+    timeList,
+    onBookingSubmit,
+    setSelectedDay,
+    setSelectedTime,
+    handleBookingSheetOpen,
+    setIsOpenAlertDialog,
+  } = useComponent({ service, bookingTimeList: BOOKING_TIME })
 
   return (
     <>
@@ -186,7 +105,6 @@ export const CreateBookingSheet = ({
                 head_cell: "w-full font-normal",
                 nav_button_next: "order-1 bg-zinc-800",
                 nav_button_previous: "order-1 bg-zinc-800 disabled:bg-zinc-950",
-
                 nav: "space-x-3",
                 day_selected: "bg-primary text-primary-foreground",
               }}

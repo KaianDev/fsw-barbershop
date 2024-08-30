@@ -2,10 +2,12 @@ import { Barbershop, BarbershopService } from "@prisma/client"
 import Image from "next/image"
 
 // Components
-import { Card, CardContent } from "./ui/card"
-import { CreateBookingSheet } from "./create-booking-sheet"
-import { Button } from "./ui/button"
-import { DialogLogin } from "./dialog-login"
+import { Card, CardContent } from "@/_components/ui/card"
+import { CreateBookingSheet } from "@/_components/create-booking-sheet"
+import { Button } from "@/_components/ui/button"
+import { DialogLogin } from "@/_components/dialog-login"
+
+// Utilities
 import { auth } from "../_lib/auth"
 
 interface ServiceItemProps {

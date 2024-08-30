@@ -1,11 +1,8 @@
 "use client"
 
-import { useLayoutEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
 import { Prisma } from "@prisma/client"
-import { format, isFuture } from "date-fns"
+import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { useDebounce } from "use-debounce"
 
 // Components
 import {
@@ -14,19 +11,19 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "./ui/sheet"
-import { BookingItem } from "./booking-item"
-import { Separator } from "./separator"
-import { BookingStatusBadge } from "./booking-status-badge"
-import { ServiceDetails } from "./service-details"
-import { PhoneItem } from "./phone-item"
-import { BarbershopMap } from "./barbershop-map"
-import { Button } from "./ui/button"
-import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
-import { ReviewBarbershop } from "./review-barbershop"
+} from "@/_components/ui/sheet"
+import { BookingItem } from "@/_components/booking-item"
+import { Separator } from "@/_components/separator"
+import { BookingStatusBadge } from "@/_components/booking-status-badge"
+import { ServiceDetails } from "@/_components/service-details"
+import { PhoneItem } from "@/_components/phone-item"
+import { BarbershopMap } from "@/_components/barbershop-map"
+import { Button } from "@/_components/ui/button"
+import { CancelBookingAlertDialog } from "@/_components/cancel-booking-alert-dialog"
+import { ReviewBarbershop } from "@/_components/review-barbershop"
 
 // Utilities
-import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"
+import { useComponent } from "./use-component"
 
 interface BookingDetailsSheetProps {
   booking: Prisma.BookingGetPayload<{
@@ -41,46 +38,14 @@ interface BookingDetailsSheetProps {
 }
 
 export const BookingDetailsSheet = ({ booking }: BookingDetailsSheetProps) => {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-
-  const [isBookingDetailsOpen, setIsBookingDetailsOpen] = useState(false)
-  const [isSmallScreen, setIsSmallScreen] = useState(false)
-  useState(false)
-
-  const [debouncedValue] = useDebounce(isSmallScreen, 200)
-
-  useLayoutEffect(() => {
-    const mediaQueryList = window.matchMedia("(max-width: 768px)")
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsSmallScreen(e.matches)
-    }
-
-    setIsSmallScreen(mediaQueryList.matches)
-
-    mediaQueryList.addEventListener("change", handleChange)
-
-    return () => {
-      mediaQueryList.removeEventListener("change", handleChange)
-    }
-  }, [isSmallScreen])
-
-  const handleBookingItemClick = () => {
-    if (debouncedValue) {
-      return setIsBookingDetailsOpen(true)
-    }
-
-    const params = new URLSearchParams(searchParams)
-    params.set("bookingId", booking.id)
-    router.push(`/bookings?${params.toString()}`)
-  }
-
-  const isConfirmedBooking = isFuture(booking.date)
-
-  const { data: review, isLoading } = useBarbershopUserReview({
-    barbershopId: booking.service.barbershop.id,
-    enabled: isBookingDetailsOpen,
-  })
+  const {
+    isBookingDetailsOpen,
+    isConfirmedBooking,
+    isLoading,
+    review,
+    handleBookingItemClick,
+    setIsBookingDetailsOpen,
+  } = useComponent({ booking })
 
   return (
     <>

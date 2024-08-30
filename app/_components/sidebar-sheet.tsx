@@ -7,9 +7,9 @@ import { CalendarDaysIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 
 // Components
-import { Separator } from "./separator"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { Button } from "./ui/button"
+import { Separator } from "@/_components/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/_components/ui/avatar"
+import { Button } from "@/_components/ui/button"
 import {
   Sheet,
   SheetClose,
@@ -17,9 +17,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet"
-import { DialogLogin } from "./dialog-login"
-import { DialogLogout } from "./dialog-logout"
+} from "@/_components/ui/sheet"
+import { DialogLogin } from "@/_components/dialog-login"
+import { DialogLogout } from "@/_components/dialog-logout"
 
 // Utilities
 import { QUICK_SEARCH } from "../_constants/quick-search"

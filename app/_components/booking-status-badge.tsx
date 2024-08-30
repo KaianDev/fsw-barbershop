@@ -1,5 +1,5 @@
 // Components
-import { Badge } from "./ui/badge"
+import { Badge } from "@/_components/ui/badge"
 
 interface BookingStatusBadgeProps {
   isConfirmedBooking: boolean

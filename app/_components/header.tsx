@@ -8,12 +8,12 @@ import { Suspense } from "react"
 import { useSession } from "next-auth/react"
 
 // Components
-import { Button } from "./ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { SidebarSheet } from "./sidebar-sheet"
-import { Search } from "./search"
-import { DialogLogin } from "./dialog-login"
-import { DialogLogout } from "./dialog-logout"
+import { Button } from "@/_components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/_components/ui/avatar"
+import { SidebarSheet } from "@/_components/sidebar-sheet"
+import { Search } from "@/_components/search"
+import { DialogLogin } from "@/_components/dialog-login"
+import { DialogLogout } from "@/_components/dialog-logout"
 
 export const Header = () => {
   const pathname = usePathname()

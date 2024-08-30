@@ -1,10 +1,10 @@
 "use client"
 
 import { SmartphoneIcon } from "lucide-react"
+import { toast } from "sonner"
 
 // Components
-import { Button } from "./ui/button"
-import { toast } from "sonner"
+import { Button } from "@/_components/ui/button"
 
 interface PhoneItemProps {
   phone: string

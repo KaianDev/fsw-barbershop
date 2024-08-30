@@ -16,15 +16,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog"
-import { Button, buttonVariants } from "./ui/button"
+} from "@/_components/ui/alert-dialog"
+import { Button, buttonVariants } from "@/_components/ui/button"
 
 // Utilities
 import { toast } from "sonner"
 import { cn } from "../_lib/utils"
 import { queryClient } from "../_lib/tanstack"
-import { useAddBarbershopUserReview } from "../_hooks/review/use-add-barbershop-user-review"
-import { useUpdateBarbershopUserReview } from "../_hooks/review/use-upate-barbershop-user-review"
+import {
+  useUpdateBarbershopUserReview,
+  useAddBarbershopUserReview,
+} from "@/app/_hooks/review"
 
 interface ReviewBarbershopProps {
   barbershop: Pick<Barbershop, "name" | "id">

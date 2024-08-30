@@ -4,12 +4,12 @@ import { Prisma } from "@prisma/client"
 import { format, isFuture } from "date-fns"
 
 // Components
-import { Card, CardContent } from "./ui/card"
-import { BarbershopDetails } from "./barbershop-details"
-import { ServiceDetails } from "./service-details"
-import { Badge } from "./ui/badge"
-import { CancelBookingAlertDialog } from "./cancel-booking-alert-dialog"
-import { ReviewBarbershop } from "./review-barbershop"
+import { Card, CardContent } from "@/_components/ui/card"
+import { BarbershopDetails } from "@/_components/barbershop-details"
+import { ServiceDetails } from "@/_components/service-details"
+import { Badge } from "@/_components/ui/badge"
+import { CancelBookingAlertDialog } from "@/_components/cancel-booking-alert-dialog"
+import { ReviewBarbershop } from "@/_components/review-barbershop"
 
 // Utilities
 import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"
