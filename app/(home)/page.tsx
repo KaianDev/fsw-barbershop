@@ -14,10 +14,10 @@ import { cn } from "../_lib/utils"
 import { auth } from "../_lib/auth"
 
 // Utilities
-
 import { QUICK_SEARCH } from "../_constants/quick-search"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
 import { getBarbershops } from "../_actions/get-barbershops"
+
 const Home = async () => {
   const session = await auth()
   const confirmedBookings = await getConfirmedBookings()
