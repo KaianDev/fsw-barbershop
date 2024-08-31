@@ -123,7 +123,7 @@ const Home = async () => {
 
           <div className="hidden space-y-3 pt-6 md:block md:pt-10">
             <h2 className="title-separator">Mais visitados</h2>
-            <BarbershopCarousel barbershops={recommendedBarbershops} />
+            <BarbershopCarousel barbershops={popularBarbershops} />
           </div>
         </div>
       </main>
