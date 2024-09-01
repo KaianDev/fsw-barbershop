@@ -9,7 +9,7 @@ import { BarbershopDetails } from "@/_components/barbershop-details"
 import { ServiceDetails } from "@/_components/service-details"
 import { Badge } from "@/_components/ui/badge"
 import { CancelBookingAlertDialog } from "@/_components/cancel-booking-alert-dialog"
-import { ReviewBarbershop } from "@/_components/review-barbershop"
+import { ReviewBarbershop } from "@/app/_components/review-barbershop"
 
 // Utilities
 import { useBarbershopUserReview } from "../_hooks/review/use-get-barbershop-user-review"

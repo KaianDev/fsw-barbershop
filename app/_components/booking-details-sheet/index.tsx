@@ -20,7 +20,7 @@ import { PhoneItem } from "@/_components/phone-item"
 import { BarbershopMap } from "@/_components/barbershop-map"
 import { Button } from "@/_components/ui/button"
 import { CancelBookingAlertDialog } from "@/_components/cancel-booking-alert-dialog"
-import { ReviewBarbershop } from "@/_components/review-barbershop"
+import { ReviewBarbershop } from "@/app/_components/review-barbershop"
 
 // Utilities
 import { useComponent } from "./use-component"

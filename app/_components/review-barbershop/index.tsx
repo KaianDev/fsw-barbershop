@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-import { useEffect, useState } from "react"
 import { Barbershop } from "@prisma/client"
 import { LoaderIcon, StarIcon } from "lucide-react"
 
@@ -20,13 +19,8 @@ import {
 import { Button, buttonVariants } from "@/_components/ui/button"
 
 // Utilities
-import { toast } from "sonner"
-import { cn } from "../_lib/utils"
-import { queryClient } from "../_lib/tanstack"
-import {
-  useUpdateBarbershopUserReview,
-  useAddBarbershopUserReview,
-} from "@/app/_hooks/review"
+import { cn } from "../../_lib/utils"
+import { useComponent } from "./use-component"
 
 interface ReviewBarbershopProps {
   barbershop: Pick<Barbershop, "name" | "id">
@@ -41,79 +35,23 @@ export const ReviewBarbershop = ({
   isLoading,
   sheetClose,
 }: ReviewBarbershopProps) => {
-  const [rating, setRating] = useState(ratingAverage || 0)
-  const [hover, setHover] = useState<number | null>(null)
-
-  useEffect(() => {
-    setRating(ratingAverage || 0)
-
-    return () => {
-      setRating(0)
-    }
-  }, [ratingAverage])
-
-  const { mutateAsync: addReviewMutate } = useAddBarbershopUserReview()
-  const { mutateAsync: updateReviewMutate } = useUpdateBarbershopUserReview()
-
-  const addNewReview = async () => {
-    await addReviewMutate(
-      {
-        barbershopId: barbershop.id,
-        rating,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: [
-              "barbershop-user-review",
-              { barbershopId: barbershop.id },
-            ],
-          })
-          toast.success("Avaliação enviada com sucesso!")
-        },
-        onError: (error) => {
-          console.log("Ocorreu um erro ao tentar avaliar uma barbearia", error)
-        },
-      },
-    )
-    sheetClose?.(false)
-  }
-
-  const updateReview = async () => {
-    await updateReviewMutate(
-      {
-        barbershopId: barbershop.id,
-        rating,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: [
-              "barbershop-user-review",
-              { barbershopId: barbershop.id },
-            ],
-          })
-          toast.success("Avaliação atualizada com sucesso!")
-        },
-        onError: (error) => {
-          console.log("Ocorreu um erro ao tentar avaliar uma barbearia", error)
-        },
-      },
-    )
-    sheetClose?.(false)
-  }
-
-  const handleReviewBarbershop = async () => {
-    if (ratingAverage) {
-      return updateReview()
-    }
-    addNewReview()
-  }
+  const {
+    hover,
+    rating,
+    isPending,
+    setHover,
+    setRating,
+    handleReviewBarbershop,
+  } = useComponent({
+    barbershop,
+    ratingAverage,
+    sheetClose,
+  })
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size="sm" className="w-full">
+        <Button size="sm" className="w-full" disabled={isPending}>
           {ratingAverage ? "Reavaliar" : "Avaliar"}
         </Button>
       </AlertDialogTrigger>
