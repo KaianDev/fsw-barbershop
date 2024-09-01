@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useTransition } from "react"
 import { useGetBookings, useCreateBooking } from "@/app/_hooks/bookings"
 import { set, isPast, isToday } from "date-fns"
 import { queryClient } from "@/app/_lib/tanstack"
@@ -49,6 +49,7 @@ export const useComponent = ({
   bookingTimeList,
   service,
 }: UseComponentProps) => {
+  const [isPending, startTransition] = useTransition()
   const [isOpenSheet, setIsOpenSheet] = useState(false)
   const [isOpenAlertDialog, setIsOpenAlertDialog] = useState(false)
 
@@ -65,39 +66,41 @@ export const useComponent = ({
 
   const { mutateAsync: createBooking } = useCreateBooking()
 
-  const onBookingSubmit = async () => {
-    if (!selectedDay || !selectedTime) {
-      return
-    }
+  const handleCreateBookingSubmit = () => {
+    startTransition(async () => {
+      if (!selectedDay || !selectedTime) {
+        return
+      }
 
-    const [hours, minutes] = selectedTime.split(":").map((i) => Number(i))
+      const [hours, minutes] = selectedTime.split(":").map((i) => Number(i))
 
-    const bookingDate = set(selectedDay, {
-      hours,
-      minutes,
+      const bookingDate = set(selectedDay, {
+        hours,
+        minutes,
+      })
+
+      await createBooking(
+        {
+          date: bookingDate,
+          serviceId: service.id,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+              queryKey: [
+                "bookings",
+                { serviceId: service.id, date: selectedDay },
+              ],
+            })
+            setIsOpenSheet(false)
+            setIsOpenAlertDialog(true)
+          },
+          onError: (error: any) => {
+            console.error("Error creating booking", error)
+          },
+        },
+      )
     })
-
-    await createBooking(
-      {
-        date: bookingDate,
-        serviceId: service.id,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: [
-              "bookings",
-              { serviceId: service.id, date: selectedDay },
-            ],
-          })
-          setIsOpenSheet(false)
-          setIsOpenAlertDialog(true)
-        },
-        onError: (error: any) => {
-          console.error("Error creating booking", error)
-        },
-      },
-    )
   }
 
   const timeList = useMemo(() => {
@@ -118,10 +121,11 @@ export const useComponent = ({
     isLoading,
     isOpenAlertDialog,
     isOpenSheet,
+    isPending,
     setSelectedDay,
     setSelectedTime,
     setIsOpenAlertDialog,
-    onBookingSubmit,
+    handleCreateBookingSubmit,
     handleBookingSheetOpen,
   }
 }

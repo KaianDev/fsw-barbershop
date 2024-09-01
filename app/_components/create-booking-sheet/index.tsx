@@ -60,9 +60,10 @@ export const CreateBookingSheet = ({
     selectedDay,
     selectedTime,
     timeList,
-    onBookingSubmit,
+    isPending,
     setSelectedDay,
     setSelectedTime,
+    handleCreateBookingSubmit,
     handleBookingSheetOpen,
     setIsOpenAlertDialog,
   } = useComponent({ service, bookingTimeList: BOOKING_TIME })
@@ -160,8 +161,8 @@ export const CreateBookingSheet = ({
 
           <div className="mt-6 px-5">
             <Button
-              onClick={onBookingSubmit}
-              disabled={!selectedDay || !selectedTime}
+              onClick={handleCreateBookingSubmit}
+              disabled={!selectedDay || !selectedTime || isPending}
               className="w-full"
             >
               Confirmar
