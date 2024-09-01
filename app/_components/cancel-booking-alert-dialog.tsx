@@ -71,7 +71,7 @@ export const CancelBookingAlertDialog = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button size="sm" variant="destructive" className="w-full">
-          Cancelar Reserva
+          Cancelar
         </Button>
       </AlertDialogTrigger>
 
@@ -80,9 +80,7 @@ export const CancelBookingAlertDialog = ({
         aria-describedby={"Feedback de reserva criada"}
       >
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-center">
-            Cancelar reservar
-          </AlertDialogTitle>
+          <AlertDialogTitle className="text-center">Cancelar</AlertDialogTitle>
           <AlertDialogDescription className="text-center">
             Tem certeza que deseja cancelar esse agendamento? Essa ação não pode
             ser desfeita.
