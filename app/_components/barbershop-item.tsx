@@ -49,7 +49,9 @@ export const BarbershopItem = async ({ barbershop }: BarbershopItemProps) => {
             variant="secondary"
             asChild
           >
-            <Link href={`/barbershops/${barbershop.id}`}>Reservar</Link>
+            <Link href={`/barbershops/${barbershop.id}`} prefetch>
+              Reservar
+            </Link>
           </Button>
         </div>
       </CardContent>
