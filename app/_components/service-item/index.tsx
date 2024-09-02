@@ -5,10 +5,10 @@ import Image from "next/image"
 import { Card, CardContent } from "@/_components/ui/card"
 import { CreateBookingSheet } from "@/_components/create-booking-sheet"
 import { Button } from "@/_components/ui/button"
-import { DialogLogin } from "@/_components/dialog-login"
+import { DialogLogin } from "@/app/_components/dialog-login"
 
 // Utilities
-import { auth } from "../_lib/auth"
+import { auth } from "@/app/_lib/auth"
 
 interface ServiceItemProps {
   service: BarbershopService

@@ -5,7 +5,7 @@ import { ptBR } from "date-fns/locale"
 // Components
 import { Avatar, AvatarImage } from "@/_components/ui/avatar"
 import { Card, CardContent } from "@/_components/ui/card"
-import { BookingStatusBadge } from "@/_components/booking-status-badge"
+import { BookingStatusBadge } from "@/app/_components/booking-status-badge"
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{

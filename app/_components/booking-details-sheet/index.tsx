@@ -14,12 +14,12 @@ import {
 } from "@/_components/ui/sheet"
 import { BookingItem } from "@/_components/booking-item"
 import { Separator } from "@/_components/separator"
-import { BookingStatusBadge } from "@/_components/booking-status-badge"
-import { ServiceDetails } from "@/_components/service-details"
-import { PhoneItem } from "@/_components/phone-item"
+import { BookingStatusBadge } from "@/app/_components/booking-status-badge"
+import { ServiceDetails } from "@/app/_components/service-details"
+import { PhoneItem } from "@/app/_components/phone-item"
 import { BarbershopMap } from "@/_components/barbershop-map"
 import { Button } from "@/_components/ui/button"
-import { CancelBookingAlertDialog } from "@/_components/cancel-booking-alert-dialog"
+import { CancelBookingAlertDialog } from "@/app/_components/cancel-booking-alert-dialog"
 import { ReviewBarbershop } from "@/app/_components/review-barbershop"
 
 // Utilities

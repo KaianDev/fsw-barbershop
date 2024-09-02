@@ -1,4 +1,4 @@
-import { cn } from "../_lib/utils"
+import { cn } from "@/app/_lib/utils"
 
 interface SeparatorProps extends React.ComponentProps<"div"> {}
 

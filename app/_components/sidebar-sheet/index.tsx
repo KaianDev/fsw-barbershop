@@ -18,11 +18,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/_components/ui/sheet"
-import { DialogLogin } from "@/_components/dialog-login"
-import { DialogLogout } from "@/_components/dialog-logout"
+import { DialogLogin } from "@/app/_components/dialog-login"
+import { DialogLogout } from "@/app/_components/dialog-logout"
 
 // Utilities
-import { QUICK_SEARCH } from "../_constants/quick-search"
+import { QUICK_SEARCH } from "../../_constants/quick-search"
 
 interface SidebarSheetProps extends React.PropsWithChildren {}
 

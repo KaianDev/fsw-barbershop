@@ -3,11 +3,11 @@ import { Nunito_Sans as FontSans } from "next/font/google"
 import "./globals.css"
 
 // Components
-import { Footer } from "./_components/footer"
-import { Toaster } from "./_components/ui/sonner"
+import { Footer } from "@/_components/footer"
+import { Toaster } from "@/_components/ui/sonner"
 
 // Utilities
-import { Providers } from "./_providers"
+import { Providers } from "@/app/_providers"
 
 const fontSans = FontSans({ subsets: ["latin"] })
 

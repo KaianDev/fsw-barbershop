@@ -24,7 +24,7 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@/_components/ui/alert-dialog"
-import { ServiceDetails } from "@/_components/service-details"
+import { ServiceDetails } from "@/app/_components/service-details"
 
 // Utilities
 import { cn } from "../../_lib/utils"

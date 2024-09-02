@@ -10,10 +10,10 @@ import { useSession } from "next-auth/react"
 // Components
 import { Button } from "@/_components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/_components/ui/avatar"
-import { SidebarSheet } from "@/_components/sidebar-sheet"
+import { SidebarSheet } from "@/app/_components/sidebar-sheet"
 import { Search } from "@/app/_components/search"
-import { DialogLogin } from "@/_components/dialog-login"
-import { DialogLogout } from "@/_components/dialog-logout"
+import { DialogLogin } from "@/app/_components/dialog-login"
+import { DialogLogout } from "@/app/_components/dialog-logout"
 
 export const Header = () => {
   const pathname = usePathname()

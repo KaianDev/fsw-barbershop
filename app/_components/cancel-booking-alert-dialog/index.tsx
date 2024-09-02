@@ -19,9 +19,9 @@ import {
 import { Button, buttonVariants } from "@/_components/ui/button"
 
 // Utilities
-import { cn } from "../_lib/utils"
-import { useCancelBooking } from "../_hooks/bookings"
-import { queryClient } from "../_lib/tanstack"
+import { cn } from "@/app/_lib/utils"
+import { useCancelBooking } from "@/app/_hooks/bookings"
+import { queryClient } from "@/app/_lib/tanstack"
 import { Prisma } from "@prisma/client"
 
 interface CancelBookingAlertDialogProps {

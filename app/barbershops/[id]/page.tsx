@@ -4,13 +4,13 @@ import { notFound } from "next/navigation"
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 
 // Components
-import { Button } from "@/app/_components/ui/button"
-import { Separator } from "@/app/_components/separator"
-import { ServiceItem } from "@/app/_components/service-item"
+import { Button } from "@/_components/ui/button"
+import { Separator } from "@/_components/separator"
+import { ServiceItem } from "@/_components/service-item"
 import { PhoneItem } from "@/app/_components/phone-item"
 import { SidebarSheet } from "@/app/_components/sidebar-sheet"
-import { Header } from "@/app/_components/header"
-import { BarbershopAside } from "@/app/_components/barbershop-aside"
+import { Header } from "@/_components/header"
+import { BarbershopAside } from "@/_components/barbershop-aside"
 
 // Utilities
 import { db } from "@/app/_lib/prisma"

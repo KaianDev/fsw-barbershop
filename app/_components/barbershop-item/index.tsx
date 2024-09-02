@@ -9,8 +9,8 @@ import { Button } from "@/_components/ui/button"
 import { Card, CardContent } from "@/_components/ui/card"
 
 // Utilities
-import { getBarbershopReview } from "../_actions/get-barbershop-review"
-import { formatRating } from "../_helpers/format-rating"
+import { getBarbershopReview } from "@/app/_actions/get-barbershop-review"
+import { formatRating } from "@/app/_helpers/format-rating"
 interface BarbershopItemProps {
   barbershop: Barbershop
 }
