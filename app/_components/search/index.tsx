@@ -1,10 +1,6 @@
 "use client"
 
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { SearchIcon } from "lucide-react"
-import { useRouter, useSearchParams } from "next/navigation"
 
 // Components
 import {
@@ -16,25 +12,10 @@ import {
 } from "@/_components/ui/form"
 import { Input } from "@/_components/ui/input"
 import { Button } from "@/_components/ui/button"
-
-const formSchema = z.object({
-  title: z.string().trim().min(1, "Digite algo para pesquisar"),
-})
+import { useComponent } from "./use-component"
 
 export const Search = () => {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: searchParams.get("title") || "",
-    },
-  })
-
-  const handleSearch = form.handleSubmit(({ title }) => {
-    router.push(`/barbershops?title=${title}`)
-  })
+  const { form, pathname, handleSearch } = useComponent()
 
   return (
     <Form {...form}>
@@ -51,7 +32,7 @@ export const Search = () => {
                   className="rounded-lg bg-card text-sm"
                 />
               </FormControl>
-              <FormMessage />
+              {pathname === "/" && <FormMessage />}
             </FormItem>
           )}
         />

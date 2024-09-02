@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react"
 import { Button } from "@/_components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/_components/ui/avatar"
 import { SidebarSheet } from "@/_components/sidebar-sheet"
-import { Search } from "@/_components/search"
+import { Search } from "@/app/_components/search"
 import { DialogLogin } from "@/_components/dialog-login"
 import { DialogLogout } from "@/_components/dialog-logout"
 
