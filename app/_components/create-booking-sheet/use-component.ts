@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react"
 import { useGetBookings, useCreateBooking } from "@/app/_hooks/bookings"
-import { set, isPast, isToday } from "date-fns"
+import { set, isPast, isToday, isSunday, isMonday } from "date-fns"
 import { queryClient } from "@/app/_lib/tanstack"
 import { BarbershopService, Booking } from "@prisma/client"
 
@@ -78,6 +78,10 @@ export const useComponent = ({
         hours,
         minutes,
       })
+
+      if (isSunday(bookingDate) || isMonday(bookingDate)) {
+        return
+      }
 
       await createBooking(
         {

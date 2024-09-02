@@ -2,7 +2,7 @@
 
 import { Barbershop, BarbershopService } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
-import { isAfter, startOfDay } from "date-fns"
+import { isAfter, isMonday, isSunday, startOfDay } from "date-fns"
 import { CheckIcon, LoaderIcon } from "lucide-react"
 
 // Components
@@ -93,7 +93,9 @@ export const CreateBookingSheet = ({
               onSelect={(date) => setSelectedDay(date)}
               fromMonth={new Date()}
               disabled={(date) =>
-                isAfter(startOfDay(new Date()), startOfDay(date))
+                isAfter(startOfDay(new Date()), startOfDay(date)) ||
+                isSunday(date) ||
+                isMonday(date)
               }
               classNames={{
                 root: "w-full !py-0",
