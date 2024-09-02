@@ -1,5 +1,5 @@
 import { Skeleton } from "@/_components/ui/skeleton"
-import { BarbershopItemSkeleton } from "./barbershop-item-skeleton"
+import { BarbershopItemSkeleton } from "@/_components/skeleton"
 
 export const BarbershopListSkeleton = () => {
   return (

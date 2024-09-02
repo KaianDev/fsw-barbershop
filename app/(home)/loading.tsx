@@ -1,6 +1,6 @@
-import { Header } from "../_components/header"
-import { BarbershopListSkeleton } from "../_components/skeleton/barbershop-list-skeleton"
-import { Skeleton } from "../_components/ui/skeleton"
+import { Header } from "@/_components/header"
+import { BarbershopListSkeleton } from "@/_components/skeleton"
+import { Skeleton } from "@/_components/ui/skeleton"
 
 const Loading = () => {
   return (

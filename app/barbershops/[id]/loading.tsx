@@ -1,8 +1,10 @@
 import { Header } from "@/app/_components/header"
 import { Separator } from "@/app/_components/separator"
-import { BarbershopAsideSkeleton } from "@/app/_components/skeleton/barbershop-aside-skeleton"
-import { BarbershopServiceItemSkeleton } from "@/app/_components/skeleton/barbershop-service-item-skeleton"
-import { PhoneItemSkeleton } from "@/app/_components/skeleton/phone-item-skeleton"
+import {
+  BarbershopAsideSkeleton,
+  BarbershopServiceItemSkeleton,
+  PhoneItemSkeleton,
+} from "@/app/_components/skeleton"
 import { Skeleton } from "@/app/_components/ui/skeleton"
 
 const LoadingBarbershopPage = () => {

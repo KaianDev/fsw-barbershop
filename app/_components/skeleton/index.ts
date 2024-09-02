@@ -1,0 +1,6 @@
+export * from "./barbershop-aside-skeleton"
+export * from "./barbershop-item-skeleton"
+export * from "./barbershop-list-skeleton"
+export * from "./barbershop-service-item-skeleton"
+export * from "./booking-item-skeleton"
+export * from "./phone-item-skeleton"

@@ -1,7 +1,9 @@
 import { Header } from "@/_components/header"
 import { Skeleton } from "@/_components/ui/skeleton"
-import { BarbershopAsideSkeleton } from "@/_components/skeleton/barbershop-aside-skeleton"
-import { BookingItemSkeleton } from "@/_components/skeleton/booking-item-skeleton"
+import {
+  BarbershopAsideSkeleton,
+  BookingItemSkeleton,
+} from "@/_components/skeleton"
 
 const BookingsLoadingPage = () => {
   return (

@@ -1,7 +1,7 @@
 import React from "react"
-import { Separator } from "../separator"
-import { Skeleton } from "../ui/skeleton"
-import { PhoneItemSkeleton } from "./phone-item-skeleton"
+import { Separator } from "@/_components/separator"
+import { Skeleton } from "@/_components/ui/skeleton"
+import { PhoneItemSkeleton } from "@/_components/skeleton"
 
 interface BarbershopAsideSkeletonProps {
   children: React.ReactNode
