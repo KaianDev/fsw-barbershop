@@ -1,14 +1,13 @@
 import { validate } from "uuid"
-import { Suspense } from "react"
 
 // Components
 import { Header } from "../_components/header"
 import { BookingDetailsAside } from "../_components/booking-details-aside"
-import { BookingDetailsSheet } from "../_components/booking-details-sheet"
 
 // Utilities
 import { getConcludedBookings } from "../_actions/get-concluded-bookings"
 import { getConfirmedBookings } from "../_actions/get-confirmed-bookings"
+import { BookingGrid } from "../_components/bookings-grid"
 
 interface BookingPagesProps {
   searchParams: {
@@ -59,25 +58,11 @@ const BookingsPage = async ({ searchParams }: BookingPagesProps) => {
       <div className="mx-auto flex max-w-[1200px] gap-10 px-5 md:px-8">
         <div className="flex-1 space-y-6">
           {confirmedBookings.length > 0 && (
-            <div className="space-y-3">
-              <h2 className="title-separator md:text-gray-500">Confirmados</h2>
-              {confirmedBookings.map((booking) => (
-                <Suspense key={booking.id}>
-                  <BookingDetailsSheet booking={booking} />
-                </Suspense>
-              ))}
-            </div>
+            <BookingGrid bookings={confirmedBookings} title="Confirmados" />
           )}
 
           {concludedBookings.length > 0 && (
-            <div className="space-y-3">
-              <h2 className="title-separator md:text-gray-500">Finalizados</h2>
-              {concludedBookings.map((booking) => (
-                <Suspense key={booking.id}>
-                  <BookingDetailsSheet booking={booking} />
-                </Suspense>
-              ))}
-            </div>
+            <BookingGrid bookings={concludedBookings} title="Finalizados" />
           )}
 
           {confirmedBookings.length === 0 && concludedBookings.length === 0 && (

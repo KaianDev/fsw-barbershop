@@ -1,11 +1,11 @@
 "use client"
 
-import { useLayoutEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { isFuture } from "date-fns"
-import { useDebounce } from "use-debounce"
 import { useBarbershopUserReview } from "@/app/_hooks/review"
 import { Prisma } from "@prisma/client"
+import { useScreenSize } from "@/app/_context/screen-size-context"
 
 interface UseComponentProps {
   booking: Prisma.BookingGetPayload<{
@@ -24,28 +24,10 @@ export const useComponent = ({ booking }: UseComponentProps) => {
   const router = useRouter()
 
   const [isBookingDetailsOpen, setIsBookingDetailsOpen] = useState(false)
-  const [isSmallScreen, setIsSmallScreen] = useState(false)
-  useState(false)
-
-  const [debouncedValue] = useDebounce(isSmallScreen, 200)
-
-  useLayoutEffect(() => {
-    const mediaQueryList = window.matchMedia("(max-width: 768px)")
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsSmallScreen(e.matches)
-    }
-
-    setIsSmallScreen(mediaQueryList.matches)
-
-    mediaQueryList.addEventListener("change", handleChange)
-
-    return () => {
-      mediaQueryList.removeEventListener("change", handleChange)
-    }
-  }, [isSmallScreen])
+  const isSmallScreen = useScreenSize()
 
   const handleBookingItemClick = () => {
-    if (debouncedValue) {
+    if (isSmallScreen) {
       return setIsBookingDetailsOpen(true)
     }
 
