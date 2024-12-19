@@ -7,9 +7,15 @@ import { SearchIcon } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 // Components
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/_components/ui/form"
+import { Input } from "@/_components/ui/input"
+import { Button } from "@/_components/ui/button"
 
 const formSchema = z.object({
   title: z.string().trim().min(1, "Digite algo para pesquisar"),

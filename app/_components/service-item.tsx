@@ -2,10 +2,12 @@ import { Barbershop, BarbershopService } from "@prisma/client"
 import Image from "next/image"
 
 // Components
-import { Card, CardContent } from "./ui/card"
-import { BookingSheet } from "./booking-sheet"
-import { Button } from "./ui/button"
-import { DialogLogin } from "./dialog-login"
+import { Card, CardContent } from "@/_components/ui/card"
+import { CreateBookingSheet } from "@/_components/create-booking-sheet"
+import { Button } from "@/_components/ui/button"
+import { DialogLogin } from "@/_components/dialog-login"
+
+// Utilities
 import { auth } from "../_lib/auth"
 
 interface ServiceItemProps {
@@ -45,7 +47,7 @@ export const ServiceItem = async ({
               }).format(Number(service.price))}
             </span>
             {session?.user ? (
-              <BookingSheet service={service} barbershop={barbershop} />
+              <CreateBookingSheet service={service} barbershop={barbershop} />
             ) : (
               <DialogLogin>
                 <Button variant="secondary" size="sm">

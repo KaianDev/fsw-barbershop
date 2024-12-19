@@ -1,4 +1,4 @@
-import { Card, CardContent } from "./ui/card"
+import { Card, CardContent } from "@/_components/ui/card"
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear()

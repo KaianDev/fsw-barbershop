@@ -4,7 +4,7 @@ import Image from "next/image"
 import { signIn } from "next-auth/react"
 
 // Components
-import { Button } from "./ui/button"
+import { Button } from "@/_components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog"
+} from "@/_components/ui/dialog"
 
 interface DialogLoginProps extends React.PropsWithChildren {}
 

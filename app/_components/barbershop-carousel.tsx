@@ -7,8 +7,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel"
-import { BarbershopItem } from "./barbershop-item"
+} from "@/_components/ui/carousel"
+import { BarbershopItem } from "@/_components/barbershop-item"
 
 interface BarbershopCarouselProps {
   barbershops: Barbershop[]
